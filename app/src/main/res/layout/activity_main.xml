@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/new_end_game_background">
+
+    <ImageView
+        android:id="@+id/bubble_iv"
+        android:layout_width="246dp"
+        android:layout_height="158dp"
+        android:layout_marginStart="28dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mute_btn"
+        app:srcCompat="@drawable/settings_bubble" />
+
+    <Button
+        android:id="@+id/lv_btn"
+        android:layout_width="209dp"
+        android:layout_height="76dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/levels_btn_theme"
+        android:onClick="levelOnClick"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/menu_iv"
+        android:layout_width="209dp"
+        android:layout_height="76dp"
+        android:layout_marginBottom="3dp"
+        android:background="@drawable/practice_btn_theme"
+        android:onClick="startGameClick"
+        app:layout_constraintBottom_toTopOf="@+id/lv_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="304dp"
+        android:layout_height="220dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/new_background" />
+
+    <Button
+        android:id="@+id/settings_btn_main"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/settings_btn"
+        android:onClick="settingsMainClick"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toTopOf="@+id/guideline2" />
+
+    <Button
+        android:id="@+id/mute_btn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/unmute_btn"
+        android:onClick="muteOnClick"
+        app:layout_constraintStart_toEndOf="@+id/settings_btn_main"
+        app:layout_constraintTop_toTopOf="@+id/guideline2" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="18dp" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="15dp" />
+
+    <Button
+        android:id="@+id/settings_confirm_btn"
+        android:layout_width="82dp"
+        android:layout_height="29dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/confirm_btn_settings"
+        android:onClick="settingsBtnMain"
+        app:layout_constraintEnd_toEndOf="@+id/bubble_iv"
+        app:layout_constraintStart_toStartOf="@+id/bubble_iv"
+        app:layout_constraintTop_toBottomOf="@+id/bubble_iv" />
+
+
+</android.support.constraint.ConstraintLayout>

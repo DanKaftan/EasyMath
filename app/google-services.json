@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1037150004658",
+    "project_id": "easy-math-60298377",
+    "storage_bucket": "easy-math-60298377.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1037150004658:android:b735cd72c7b33db88d70ab",
+        "android_client_info": {
+          "package_name": "com.dan.kaftan.game"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1037150004658-8rh3j9semrgvrfe0c1tpkbmi76tdkbu5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_JE1bcs5DCinT93oGZ-SbtMsVfNWkYu0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1037150004658-8rh3j9semrgvrfe0c1tpkbmi76tdkbu5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

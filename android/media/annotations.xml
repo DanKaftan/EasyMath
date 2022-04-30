@@ -1,0 +1,8 @@
+<root>
+    <item name='android.media.AudioManager'>
+        <annotation name='java.lang.Deprecated' />
+    </item>
+    <item name='android.media.AudioManager STREAM_MUSIC'>
+        <annotation name='android.support.annotation.NonNull' />
+    </item>
+</root>

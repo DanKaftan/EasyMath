@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">MathGame</string>
+    <string name="title_activity_wrong_answer">wrong_answer</string>
+    <string name="leaderboard_id">CgkIzZfT9PUaEAIQAA</string>
+</resources>
