@@ -3,15 +3,21 @@ package com.dan.kaftan.game;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayout;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.dan.kaftan.game.targil.BankOfTargils;
@@ -49,7 +55,7 @@ public class Game extends AppCompatActivity {
     int trueAnswer = 0;
     int invalidationCounter = 0;
     int score = 0;
-    int timerSeconds = 10;
+    int timerSeconds = 15;
     int maxAnswer = welcome_screen.ismulty ? 100 : 10;
     int maxResult = Integer.MIN_VALUE;
     int minResult = Integer.MAX_VALUE;
@@ -58,11 +64,13 @@ public class Game extends AppCompatActivity {
     int firstNum = 0;
     int secondNum = 0;
     int entersCounter = 0;
+    int maxLevel = 1;
 
     String timerSecondsOnString = "10";
 
     Button homeBtn;
     Button muteBtn;
+
 
 
     TextView tv;
@@ -89,6 +97,7 @@ public class Game extends AppCompatActivity {
     boolean revive = false;
     boolean mute;
     boolean isLevel;
+    boolean isFirstVisit;
     boolean isRightAnswer = false;
     // for disabling sound
     boolean isVisible = true;
@@ -119,6 +128,10 @@ public class Game extends AppCompatActivity {
     int[] exNumArray = new int[48];
     int[] maxResultArray = new int[48];
 
+    List<ImageView> circle_list = new ArrayList<ImageView>();
+
+    GridLayout gridLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,12 +143,18 @@ public class Game extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         getSupportActionBar().hide();
+        //hide navigation bar
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        decorView.setSystemUiVisibility(uiOptions);
 
         // rotate screen
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         setViews();
         levelMode();
         setEntersCounter();
+
+
 
         // end game ad
         interstitialAd = new InterstitialAd(this);
@@ -167,11 +186,12 @@ public class Game extends AppCompatActivity {
         if (!isLevel) {
             tvScore.setText("score: " + Integer.toString(score));
             levelTv.setVisibility(View.INVISIBLE);
+            gridLayout.setVisibility(View.INVISIBLE);
         } else {
             tvScore.setText(currentExNum + "/" + exNumArray[levelNum - 1]);
-            levelTv.setText("level: " + levelNum);
+            //levelTv.setText("level: " + levelNum);
             levelTv.setVisibility(View.VISIBLE);
-
+            gridLayout.setVisibility(View.VISIBLE);
         }
 
 
@@ -222,6 +242,8 @@ public class Game extends AppCompatActivity {
 
         setGame();
 
+
+
     }
 
 
@@ -229,7 +251,6 @@ public class Game extends AppCompatActivity {
 
     public void setGame() {
 
-        System.out.println("levelNum" + levelNum);
         trueAnsTv.setVisibility(View.INVISIBLE);
 
         initGameView();
@@ -241,7 +262,10 @@ public class Game extends AppCompatActivity {
         chooseLocationForAnswers();
 
         setTimerForAnswer();
+        if (isLevel){
+            update_level_bar();
 
+        }
     }
 
 
@@ -328,6 +352,7 @@ public class Game extends AppCompatActivity {
         tv.setVisibility(View.VISIBLE);
         tvScore.setVisibility(View.VISIBLE);
         timer.setVisibility(View.VISIBLE);
+        gridLayout.setVisibility(View.VISIBLE);
     }
 
 
@@ -409,6 +434,7 @@ public class Game extends AppCompatActivity {
             tva2.setVisibility(View.INVISIBLE);
             tva3.setVisibility(View.INVISIBLE);
             tva4.setVisibility(View.INVISIBLE);
+            gridLayout.setVisibility(View.INVISIBLE);
             tv.setVisibility(View.INVISIBLE);
             //tvScore.setVisibility(View.INVISIBLE);
             timer.setVisibility(View.INVISIBLE);
@@ -467,7 +493,7 @@ public class Game extends AppCompatActivity {
 
                 if ((exNumArray[levelNum - 1] == currentExNum) && (isLevel)) {
 
-                    levelNum++;
+                    //levelNum++;
                     if (levelNum == 47) {
                     }
                     levelPassed = true;
@@ -740,13 +766,19 @@ public class Game extends AppCompatActivity {
 //            initTargilim(maxAnswer-1,maxAnswer-1, maxResultArray[levelNum-1], true,"x");
 
 //            initTargilim(maxAnswer-1,maxAnswer-1, maxResultArray[levelNum-1], true,"+");
+            setLevelBar();
+
         }
+
 
 
     }
 
 
     private void setLevel() {
+        Intent i = getIntent();
+        levelNum = i.getIntExtra("chosenLevelNum", 1);
+        levelTv.setText("level: " + levelNum);
         FileInputStream fis = null;
         try {
             fis = openFileInput("level");
@@ -757,7 +789,18 @@ public class Game extends AppCompatActivity {
             while ((text = br.readLine()) != null) {
 
                 sb.append(text);
-                levelNum = Integer.parseInt(sb.toString());
+                i = getIntent();
+                levelNum = i.getIntExtra("chosenLevelNum", 1);
+                levelTv.setText("level: " + levelNum);
+                int savedLevel = Integer.parseInt(sb.toString());
+                if (savedLevel > levelNum){
+                    maxLevel = savedLevel;
+                }
+                else{
+                    maxLevel = levelNum;
+                }
+
+
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -783,7 +826,13 @@ public class Game extends AppCompatActivity {
 
         try {
             fos = openFileOutput("level", MODE_PRIVATE);
-            fos.write(Integer.toString(levelNum).getBytes());
+            if (levelPassed && levelNum==maxLevel){
+                fos.write(Integer.toString(maxLevel+1).getBytes());
+
+            }
+            else{
+                fos.write(Integer.toString(maxLevel).getBytes());
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -877,6 +926,7 @@ public class Game extends AppCompatActivity {
         hiv3 = (ImageView) findViewById(R.id.hiv3);
         //mAdView = findViewById(R.id.adView);
         homeBtn = (Button) findViewById(R.id.home_btn_game);
+        gridLayout = (GridLayout) findViewById(R.id.grid_level_bar);
 
     }
 
@@ -896,54 +946,37 @@ public class Game extends AppCompatActivity {
 
     private void setLevelsArrays() {
 
-        timeArray[0] = 15;
-        timeArray[1] = 15;
-        timeArray[2] = 12;
-        timeArray[3] = 12;
+
+        // read levels details from file
+        Intent i = getIntent();
+        isFirstVisit = i.getBooleanExtra("isFirstVisit", true);
+        if(isFirstVisit){
+
+        }
+
+
+
+        timeArray[0] = 20;
+        timeArray[1] = 20;
+        timeArray[2] = 15;
+        timeArray[3] = 15;
         timeArray[4] = 10;
         timeArray[5] = 10;
         timeArray[6] = 20;
         timeArray[7] = 20;
-        timeArray[8] = 7;
-        timeArray[9] = 7;
-        timeArray[10] = 7;
-        timeArray[11] = 5;
-        timeArray[12] = 4;
-        timeArray[13] = 7;
-        timeArray[14] = 7;
+        timeArray[8] = 15;
+        timeArray[9] = 10;
+        timeArray[10] = 20;
+        timeArray[11] = 15;
+        timeArray[12] = 8;
+        timeArray[13] = 8;
+        timeArray[14] = 8;
         timeArray[15] = 7;
         timeArray[16] = 7;
         timeArray[17] = 5;
-        timeArray[18] = 3;
-        timeArray[19] = 3;
-        timeArray[20] = 2;
-        timeArray[21] = 2;
-        timeArray[22] = 10;
-        timeArray[23] = 10;
-        timeArray[24] = 10;
-        timeArray[25] = 10;
-        timeArray[26] = 7;
-        timeArray[27] = 7;
-        timeArray[28] = 7;
-        timeArray[29] = 5;
-        timeArray[30] = 5;
-        timeArray[31] = 7;
-        timeArray[32] = 7;
-        timeArray[33] = 7;
-        timeArray[34] = 5;
-        timeArray[35] = 3;
-        timeArray[36] = 3;
-        timeArray[37] = 2;
-        timeArray[38] = 2;
-        timeArray[39] = 10;
-        timeArray[40] = 10;
-        timeArray[41] = 10;
-        timeArray[42] = 10;
-        timeArray[43] = 7;
-        timeArray[44] = 7;
-        timeArray[45] = 7;
-        timeArray[46] = 5;
-        timeArray[47] = 5;
+        timeArray[18] = 5;
+        timeArray[19] = 5;
+        timeArray[20] = 7;
 
 
         exNumArray[0] = 3;
@@ -953,51 +986,25 @@ public class Game extends AppCompatActivity {
         exNumArray[4] = 3;
         exNumArray[5] = 5;
         exNumArray[6] = 7;
-        exNumArray[7] = 20;
-        exNumArray[8] = 20;
+        exNumArray[7] = 9;
+        exNumArray[8] = 9;
         exNumArray[9] = 10;
         exNumArray[10] = 10;
-        exNumArray[11] = 3;
+        exNumArray[11] = 10;
         exNumArray[12] = 3;
-        exNumArray[13] = 7;
-        exNumArray[14] = 20;
-        exNumArray[15] = 25;
-        exNumArray[16] = 30;
-        exNumArray[17] = 25;
-        exNumArray[18] = 10;
-        exNumArray[19] = 15;
-        exNumArray[20] = 5;
-        exNumArray[21] = 7;
-        exNumArray[22] = 20;
-        exNumArray[23] = 25;
-        exNumArray[24] = 30;
-        exNumArray[25] = 35;
-        exNumArray[26] = 20;
-        exNumArray[27] = 25;
-        exNumArray[28] = 30;
-        exNumArray[29] = 25;
-        exNumArray[30] = 30;
-        exNumArray[31] = 20;
-        exNumArray[32] = 25;
-        exNumArray[33] = 30;
-        exNumArray[34] = 25;
-        exNumArray[35] = 10;
-        exNumArray[36] = 15;
-        exNumArray[37] = 5;
-        exNumArray[38] = 7;
-        exNumArray[39] = 20;
-        exNumArray[40] = 25;
-        exNumArray[41] = 30;
-        exNumArray[42] = 35;
-        exNumArray[43] = 20;
-        exNumArray[44] = 25;
-        exNumArray[45] = 30;
-        exNumArray[46] = 25;
-        exNumArray[47] = 30;
+        exNumArray[13] = 3;
+        exNumArray[14] = 5;
+        exNumArray[15] = 7;
+        exNumArray[16] = 10;
+        exNumArray[17] = 3;
+        exNumArray[18] = 5;
+        exNumArray[19] = 10;
+        exNumArray[20] = 15;
 
 
-        for (int i = 0; i <= 47; i++) {
-            maxResultArray[i] = 10;
+
+        for (int j = 0; j <= 47; j++) {
+            maxResultArray[j] = 10;
 
         }
 
@@ -1017,6 +1024,67 @@ public class Game extends AppCompatActivity {
         }
         mute = !mute;
     }
+
+
+    private void setLevelBar(){
+        initateLevelBar();
+        // create ImageView
+        GridLayout layout = (GridLayout) findViewById(R.id.grid_level_bar);
+        ViewTreeObserver vto = layout.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                    layout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                } else {
+                    layout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+                int width = layout.getMeasuredWidth();
+                int height = layout.getMeasuredHeight();
+                setLevelViews(height, width);
+
+            }
+        });
+
+    }
+    private void setLevelViews(int layoutHeight, int layoutWidth) {
+
+        int width = 100;
+        int height = 100;
+        //ArrayList<String> data = new ArrayList<>();
+        //data.clear();
+        gridLayout.setColumnCount(exNumArray[levelNum - 1]);
+        gridLayout.removeAllViews();
+        for (int i = 0; i < exNumArray[levelNum - 1]; i++) {
+            ImageView imageView = circle_list.get(i);
+            GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams();
+            layoutParams.width = width;
+            layoutParams.height = height;
+            imageView.setLayoutParams(layoutParams);
+            imageView.setImageResource(R.drawable.level_bar_not_finished);
+            gridLayout.addView(imageView, i);
+        }
+
+    }
+    private void update_level_bar(){
+        for (int i = 0; i < exNumArray[levelNum - 1]-1; i++) {
+            if(i< currentExNum){
+                circle_list.get(i).setImageResource(R.drawable.level_bar_finished);
+            }
+            else{
+                circle_list.get(i).setImageResource(R.drawable.level_bar_not_finished);
+
+            }
+        }
+    }
+
+    private void initateLevelBar(){
+        for (int i = 0; i < exNumArray[levelNum - 1]+1; i++) {
+            ImageView imageView = new ImageView(this);
+            circle_list.add(imageView);
+        }
+    }
+
 }
 
 

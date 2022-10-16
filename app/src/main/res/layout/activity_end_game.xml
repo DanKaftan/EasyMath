@@ -4,14 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/end_game_background">
+    android:background="@drawable/end_game_background"
+    android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen">
+
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/new_end_game_background"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="25dp">
+        tools:layout_editor_absoluteY="0dp">
 
         <TextView
             android:id="@+id/textView6"
@@ -80,7 +82,7 @@
             app:layout_constraintTop_toTopOf="@+id/space2" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/finalscoretv"
             android:layout_width="100dp"
             android:layout_height="29dp"
             android:background="@drawable/final_score"
@@ -89,7 +91,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tvFinalScore" />
 
         <ImageView
-            android:id="@+id/imageView6"
+            android:id="@+id/game_over_img"
             android:layout_width="486dp"
             android:layout_height="109dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -125,6 +127,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent" />
+
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -188,8 +191,68 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.499"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView6"
+            app:layout_constraintTop_toBottomOf="@+id/game_over_img"
             app:layout_constraintVertical_bias="0.0" />
+
+        <LinearLayout
+            android:layout_width="436dp"
+            android:layout_height="310dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/btnStartNewGame"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.923">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="378dp"
+                android:layout_height="85dp"
+                android:fontFamily="@font/gummy_bears"
+                android:gravity="center"
+                android:text="Your final score is:"
+                android:textColor="#66D2FC"
+                android:textSize="50sp" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:background="@drawable/score_circle"
+                android:fontFamily="@font/gummy_bears"
+                android:gravity="center"
+                android:text="520"
+                android:textColor="#FE85B5"
+                android:textSize="50sp" />
+
+            <LinearLayout
+                android:layout_width="326dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/gummy_bears"
+                    android:gravity="center"
+                    android:text="New Best Score!"
+                    android:textColor="#FEE537"
+                    android:textSize="40sp" />
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="51dp"
+                    android:layout_height="52dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/trophy" />
+            </LinearLayout>
+
+
+        </LinearLayout>
 
     </android.support.constraint.ConstraintLayout>
 
@@ -218,5 +281,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_begin="20dp" />
+
+
 
 </android.support.constraint.ConstraintLayout>

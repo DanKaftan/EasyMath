@@ -70,6 +70,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
+        //hide navigation bar
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        decorView.setSystemUiVisibility(uiOptions);
+
 
         // rotate screen
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -178,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(MainActivity.this, LevelsMenu.class);
         i.putExtra("mute", mute);
         i.putExtra("isLevel", isLevel);
+        i.putExtra("isFirstVisit", isFirstVisit);
         startActivity(i);
     }
 
@@ -195,8 +201,6 @@ public class MainActivity extends AppCompatActivity {
                 fos = openFileOutput("level", MODE_PRIVATE);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
             } finally {
                 if (fos != null) {
 
@@ -210,6 +214,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+
 
     private void saveIsFirstVisitFile() {
         FileOutputStream fos = null;
@@ -279,8 +285,6 @@ public class MainActivity extends AppCompatActivity {
             try {
                 fos = openFileOutput("counter", MODE_PRIVATE);
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
                 e.printStackTrace();
             } finally {
                 if (fos != null) {

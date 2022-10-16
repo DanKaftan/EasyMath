@@ -5,6 +5,8 @@
       <map>
         <entry key="app/src/main/res/drawable/button_background.xml" value="0.23958333333333334" />
         <entry key="app/src/main/res/drawable/welcome_screen_background.xml" value="0.34479166666666666" />
+        <entry key="app/src/main/res/font/diplomata.xml" value="0.43385416666666665" />
+        <entry key="app/src/main/res/layout-land/activity_welcome_screen.xml" value="0.1948853615520282" />
         <entry key="app/src/main/res/layout/activity_end_game.xml" value="0.375" />
         <entry key="app/src/main/res/layout/activity_end_level.xml" value="0.5" />
         <entry key="app/src/main/res/layout/activity_game.xml" value="0.4024390243902439" />

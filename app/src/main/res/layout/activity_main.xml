@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/new_end_game_background">
+    android:background="@drawable/new_end_game_background"
+    android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen"
+    >
 
     <ImageView
         android:id="@+id/bubble_iv"
@@ -14,29 +16,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mute_btn"
         app:srcCompat="@drawable/settings_bubble" />
-
-    <Button
-        android:id="@+id/lv_btn"
-        android:layout_width="209dp"
-        android:layout_height="76dp"
-        android:layout_marginBottom="15dp"
-        android:background="@drawable/levels_btn_theme"
-        android:onClick="levelOnClick"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/menu_iv"
-        android:layout_width="209dp"
-        android:layout_height="76dp"
-        android:layout_marginBottom="3dp"
-        android:background="@drawable/practice_btn_theme"
-        android:onClick="startGameClick"
-        app:layout_constraintBottom_toTopOf="@+id/lv_btn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
     <ImageView
         android:id="@+id/imageView3"
@@ -92,6 +71,31 @@
         app:layout_constraintEnd_toEndOf="@+id/bubble_iv"
         app:layout_constraintStart_toStartOf="@+id/bubble_iv"
         app:layout_constraintTop_toBottomOf="@+id/bubble_iv" />
+
+    <LinearLayout
+        android:layout_width="210dp"
+        android:layout_height="160dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3">
+
+        <Button
+            android:id="@+id/menu_iv"
+            android:layout_width="210dp"
+            android:layout_height="76dp"
+            android:background="@drawable/practice_btn_theme"
+            android:onClick="startGameClick" />
+
+        <Button
+            android:id="@+id/lv_btn"
+            android:layout_width="210dp"
+            android:layout_height="76dp"
+            android:background="@drawable/levels_btn_theme"
+            android:onClick="levelOnClick" />
+    </LinearLayout>
 
 
 </android.support.constraint.ConstraintLayout>

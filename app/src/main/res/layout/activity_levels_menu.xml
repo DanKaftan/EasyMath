@@ -5,60 +5,305 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/new_end_game_background"
-    tools:context=".LevelsMenu">
+    tools:context=".LevelsMenu"
+    android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen">
 
-    <TableLayout
-        android:id="@+id/table_layuot"
-        android:layout_width="568dp"
-        android:layout_height="289dp"
+    <android.support.v7.widget.GridLayout
+        android:id="@+id/gridview"
+        android:layout_width="556dp"
+        android:layout_height="291dp"
+        app:columnCount="10"
+        app:columnOrderPreserved="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        app:layout_constraintVertical_bias="0.448">
+
+        <Button
+            android:id="@+id/level21btn"
+            android:layout_width="57dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/done_level_btn"
+            android:onClick="onClick"
+            app:layout_column="6"
+            app:layout_row="2"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <Button
+            android:id="@+id/level1btn"
+            android:layout_width="57dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/done_level_btn"
+            android:onClick="onClick"
+            app:layout_column="0"
+            app:layout_row="0"
+            tools:ignore="OnClick,SpeakableTextPresentCheck" />
+
+        <Button
+            android:id="@+id/level19btn"
+            android:layout_width="57dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/done_level_btn"
+            android:onClick="onClick"
+            app:layout_column="4"
+            app:layout_row="2"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <Button
+            android:id="@+id/level20btn"
+            android:layout_width="57dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/done_level_btn"
+            android:onClick="onClick"
+            app:layout_column="5"
+            app:layout_row="2"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <Button
+            android:id="@+id/level2btn"
+            android:layout_width="60dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/done_level_btn"
+            android:onClick="onClick"
+            app:layout_column="1"
+            app:layout_row="0" />
+
+        <Button
+            android:id="@+id/level3btn"
+            android:layout_width="60dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/current_level_btn"
+            android:onClick="onClick"
+            app:layout_column="2"
+            app:layout_row="0" />
+
+        <Button
+            android:id="@+id/level4btn"
+            android:layout_width="60dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/lock_level_btn"
+            android:onClick="onClick"
+            app:layout_column="3"
+            app:layout_row="0" />
+
+        <Button
+            android:id="@+id/level5btn"
+            android:layout_width="60dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/lock_level_btn"
+            android:onClick="onClick"
+            app:layout_column="4"
+            app:layout_row="0" />
+
+        <Button
+            android:id="@+id/level6btn"
+            android:layout_width="57dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/done_level_btn"
+            android:onClick="onClick"
+            app:layout_column="5"
+            app:layout_row="0"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <Button
+            android:id="@+id/level7btn"
+            android:layout_width="57dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/done_level_btn"
+            android:onClick="onClick"
+            app:layout_column="6"
+            app:layout_row="0"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <Button
+            android:id="@+id/level8btn"
+            android:layout_width="57dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/done_level_btn"
+            android:onClick="onClick"
+            app:layout_column="0"
+            app:layout_row="1"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <Button
+            android:id="@+id/level9btn"
+            android:layout_width="57dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/done_level_btn"
+            android:onClick="onClick"
+            app:layout_column="1"
+            app:layout_row="1"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <Button
+            android:id="@+id/level10btn"
+            android:layout_width="57dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/done_level_btn"
+            android:onClick="onClick"
+            app:layout_column="2"
+            app:layout_row="1"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <Button
+            android:id="@+id/level11btn"
+            android:layout_width="57dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/done_level_btn"
+            android:onClick="onClick"
+            app:layout_column="3"
+            app:layout_row="1"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <Button
+            android:id="@+id/level12btn"
+            android:layout_width="57dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/done_level_btn"
+            android:onClick="onClick"
+            app:layout_column="4"
+            app:layout_row="1"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <Button
+            android:id="@+id/level13btn"
+            android:layout_width="57dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/done_level_btn"
+            android:onClick="onClick"
+            app:layout_column="5"
+            app:layout_row="1"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <Button
+            android:id="@+id/level14btn"
+            android:layout_width="57dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/done_level_btn"
+            android:onClick="onClick"
+            app:layout_column="6"
+            app:layout_row="1"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <Button
+            android:id="@+id/level15btn"
+            android:layout_width="57dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/done_level_btn"
+            android:onClick="onClick"
+            app:layout_column="0"
+            app:layout_row="2"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <Button
+            android:id="@+id/level16btn"
+            android:layout_width="57dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/done_level_btn"
+            android:onClick="onClick"
+            app:layout_column="1"
+            app:layout_row="2"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <Button
+            android:id="@+id/level17btn"
+            android:layout_width="57dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/done_level_btn"
+            android:onClick="onClick"
+            app:layout_column="2"
+            app:layout_row="2"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <Button
+            android:id="@+id/level18btn"
+            android:layout_width="57dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/done_level_btn"
+            android:onClick="onClick"
+            app:layout_column="3"
+            app:layout_row="2"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+    </android.support.v7.widget.GridLayout>
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="248dp"
+        android:layout_height="85dp"
+        android:layout_marginStart="241dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="242dp"
+        android:layout_marginBottom="320dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.496"
-        android:shrinkColumns="*">
+        app:srcCompat="@drawable/level_title" />
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:gravity="center_horizontal" />
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal" />
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="50dp" />
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </TableLayout>
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="269dp"
-        android:layout_height="62dp"
-        android:gravity="center"
-        android:text="Levels menu"
-        android:textAlignment="gravity"
-        android:textColor="#000000"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
+    <LinearLayout
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:id="@+id/button10"
-        android:layout_width="152dp"
-        android:layout_height="62dp"
-        android:layout_marginBottom="4dp"
-        android:text="start next level"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.499"
-        app:layout_constraintStart_toStartOf="parent" />
+        <Button
+            android:id="@+id/button26"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:onClick="homeBtnOnClick"
+            android:background="@drawable/home_level_menu_btn" />
 
+        <Button
+            android:id="@+id/button25"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/mute_level_menu_btn"
+            android:onClick="levelmuteOnClick" />
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

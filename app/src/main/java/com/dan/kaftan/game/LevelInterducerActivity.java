@@ -14,6 +14,9 @@ import android.widget.TextView;
 
 public class LevelInterducerActivity extends AppCompatActivity {
 
+
+    int levelNum = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // rotate screen
@@ -25,16 +28,23 @@ public class LevelInterducerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_level_interducer);
 
         getSupportActionBar().hide();
+        //hide navigation bar
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        decorView.setSystemUiVisibility(uiOptions);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         // start music
         MediaPlayer nextLevelMusic = MediaPlayer.create(LevelInterducerActivity.this, R.raw.game_over_sound);
         nextLevelMusic.start();
 
+
+
         // start animation
         Animation myanim = AnimationUtils.loadAnimation(this, R.anim.mytransition);
         TextView levelTv = (TextView) findViewById(R.id.level_tv_int);
         Intent intent = getIntent();
+        levelNum = intent.getIntExtra("levelNum", 0 );
         levelTv.setText("level " + intent.getIntExtra("levelNum", 0 ));
         levelTv.startAnimation(myanim);
         // start level
@@ -64,6 +74,7 @@ public class LevelInterducerActivity extends AppCompatActivity {
                     Intent intent = getIntent();
                     i.putExtra("isLevel", intent.getBooleanExtra("isLevel", false));
                     i.putExtra("mute", intent.getBooleanExtra("mute", false));
+                    i.putExtra("chosenLevelNum", levelNum);
                     startActivity(i);
                     finish();
                 }

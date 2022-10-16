@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/class_bacground">
+    android:background="@drawable/class_bacground"
+    android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen">
 
     <TextView
         android:id="@+id/tv"
@@ -269,5 +270,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv"
         app:layout_constraintVertical_bias="0.804" />
+
+    <android.support.v7.widget.GridLayout
+        android:id="@+id/grid_level_bar"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timer">
+
+    </android.support.v7.widget.GridLayout>
 
 </android.support.constraint.ConstraintLayout>

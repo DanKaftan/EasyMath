@@ -1,22 +1,22 @@
 package com.dan.kaftan.game;
 
-import android.app.Activity;
+import android.animation.ValueAnimator;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -26,18 +26,11 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.games.Games;
 import com.google.android.gms.games.LeaderboardsClient;
-import com.google.android.gms.games.leaderboard.Leaderboard;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.play.core.review.ReviewInfo;
 import com.google.android.play.core.review.ReviewManager;
 import com.google.android.play.core.review.ReviewManagerFactory;
@@ -57,23 +50,29 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
 
     TextView tvFinalScore;
     TextView tvBestScore;
+    TextView finalScoreTV;
+    TextView bestScoreTv;
 
     int score = 0;
     int bestScore = 0;
     int entersCounter = 0;
 
 
-    Button btnStartNewGame;
     Button btnShare;
     Button muteBtn;
     Button rateStarBtn;
     Button btnRevive;
     Button menuBtn;
+    Button settingsBtn;
+    Button startNewGameBtn;
+
+
 
     boolean revive = false;
     boolean mute;
     boolean isFromSettings = true;
 
+    ImageView gameOverImg;
 
 
     private RewardedVideoAd mRewardedVideoAd;
@@ -87,12 +86,18 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
 
     ReviewInfo reviewInfo;
 
+    boolean isVisible = true;
+
+
     GoogleSignInClient googleSignIn;
     private static final int RC_SIGN_IN = 9001;
     LeaderboardsClient leaderboardsClient;
     GoogleSignInAccount signedInAccount;
 
-    private static final int RC_LEADERBOARD_UI = 9004;
+    MediaPlayer countingSound;
+
+
+
 
 
 
@@ -102,7 +107,7 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
     Thread tr1 = new Thread(new Runnable() {
         @Override
         public void run() {
-
+            SystemClock.sleep(4000);
             Animation animZoomIn = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.zoom_in);
             Animation animZoomOut = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.zoom_out);
             while (!Thread.currentThread().isInterrupted()) {
@@ -128,6 +133,11 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_end_game);
         getSupportActionBar().hide();
+        //hide navigation bar
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        decorView.setSystemUiVisibility(uiOptions);
+
 
         // rotate screen
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -142,15 +152,9 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
         isFromSettings = i.getBooleanExtra("isFromSettings", true);
         mute = i.getBooleanExtra("mute", true);
 
-        // show the ad
-        if (Game.interstitialAd.isLoaded() && !isFromSettings) {
-            Game.interstitialAd.show();
-        }
 
         gameOverSound = MediaPlayer.create(EndGame.this, R.raw.game_over_sound);
-        if (!mute && !isFromSettings) {
-            gameOverSound.start();
-        }
+
 
         btnRevive = (Button) findViewById(R.id.btnrevive);
         mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
@@ -160,6 +164,12 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
         tvBestScore = (TextView) findViewById(R.id.tvBestScore);
         muteBtn = (Button) findViewById(R.id.mute_btn2);
         menuBtn = (Button) findViewById(R.id.home_btn_end_game);
+        gameOverImg = (ImageView) findViewById(R.id.game_over_img);
+        finalScoreTV= (TextView) findViewById(R.id.finalscoretv);
+        bestScoreTv= (TextView) findViewById(R.id.textView6);
+        startNewGameBtn = (Button) findViewById(R.id.btnStartNewGame);
+        settingsBtn = (Button) findViewById(R.id.end_game_settings_btn);
+
         setEntersCounter();
 
 
@@ -176,6 +186,17 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
         displayFinalScore();
         share();
         getBestScore();
+
+        startSummery();
+
+        // show the ad
+        if (Game.interstitialAd.isLoaded() && !isFromSettings) {
+            Game.interstitialAd.show();
+        }
+
+        if (!mute && !isFromSettings) {
+            //gameOverSound.start();
+        }
 
 
         if (bestScore < score) {
@@ -528,26 +549,172 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
         }
     }
 
+    private void startSummery(){
+        TextView yourFinalScoreTv = (TextView) findViewById(R.id.textView3);
+        TextView countingScoreTv = (TextView) findViewById(R.id.textView);
+        TextView bestScoreCountingTv = (TextView) findViewById(R.id.textView5);
+        ImageView cupIm = (ImageView) findViewById(R.id.imageView);
+        // set Visibilty
+        //btnShare.setVisibility(View.INVISIBLE);
+        btnShare.setVisibility(View.INVISIBLE);
+        btnShare.postDelayed(new Runnable() {
+            public void run() {
+                btnShare.setVisibility(View.VISIBLE);
+            }
+        }, 4000);
+        muteBtn.setVisibility(View.INVISIBLE);
+        muteBtn.postDelayed(new Runnable() {
+            public void run() {
+                muteBtn.setVisibility(View.VISIBLE);
+            }
+        }, 4000);
+        rateStarBtn.setVisibility(View.INVISIBLE);
+        rateStarBtn.postDelayed(new Runnable() {
+            public void run() {
+                rateStarBtn.setVisibility(View.VISIBLE);
+            }
+        }, 4000);
 
-    private void showLeaderboard() {
-        Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this))
-                .getLeaderboardIntent(getString(R.string.leaderboard_id))
-                .addOnSuccessListener(new OnSuccessListener<Intent>() {
-                    @Override
-                    public void onSuccess(Intent intent) {
-                        startActivityForResult(intent, RC_LEADERBOARD_UI);
-                    }
-                });
+        btnRevive.setVisibility(View.INVISIBLE);
+        btnRevive.postDelayed(new Runnable() {
+            public void run() {
+                btnRevive.setVisibility(View.VISIBLE);
+            }
+        }, 4000);
+        menuBtn.setVisibility(View.INVISIBLE);
+        menuBtn.postDelayed(new Runnable() {
+            public void run() {
+                menuBtn.setVisibility(View.VISIBLE);
+            }
+        }, 4000);
+        tvFinalScore.setVisibility(View.INVISIBLE);
+        tvFinalScore.postDelayed(new Runnable() {
+            public void run() {
+                tvFinalScore.setVisibility(View.VISIBLE);
+            }
+        }, 4000);
+        tvBestScore.setVisibility(View.INVISIBLE);
+        tvBestScore.postDelayed(new Runnable() {
+            public void run() {
+                tvBestScore.setVisibility(View.VISIBLE);
+            }
+        }, 4000);
+        gameOverImg.setVisibility(View.INVISIBLE);
+        gameOverImg.postDelayed(new Runnable() {
+            public void run() {
+                gameOverImg.setVisibility(View.VISIBLE);
+            }
+        }, 4000);
+        finalScoreTV.setVisibility(View.INVISIBLE);
+        finalScoreTV.postDelayed(new Runnable() {
+            public void run() {
+                finalScoreTV.setVisibility(View.VISIBLE);
+            }
+        }, 4000);
+        bestScoreTv.setVisibility(View.INVISIBLE);
+        bestScoreTv.postDelayed(new Runnable() {
+            public void run() {
+                bestScoreTv.setVisibility(View.VISIBLE);
+            }
+        }, 4000);
+        startNewGameBtn.setVisibility(View.INVISIBLE);
+        startNewGameBtn.postDelayed(new Runnable() {
+            public void run() {
+                startNewGameBtn.setVisibility(View.VISIBLE);
+            }
+        }, 4000);
+        settingsBtn.setVisibility(View.INVISIBLE);
+        settingsBtn.postDelayed(new Runnable() {
+            public void run() {
+                settingsBtn.setVisibility(View.VISIBLE);
+            }
+        }, 4000);
+        bestScoreCountingTv.setVisibility(View.INVISIBLE);
+        cupIm.setVisibility(View.INVISIBLE);
+
+        yourFinalScoreTv.setVisibility(View.VISIBLE);
+        yourFinalScoreTv.postDelayed(new Runnable() {
+            public void run() {
+                yourFinalScoreTv.setVisibility(View.INVISIBLE);
+            }
+        }, 4000);
+        countingScoreTv.setVisibility(View.VISIBLE);
+        countingScoreTv.postDelayed(new Runnable() {
+            public void run() {
+                countingScoreTv.setVisibility(View.INVISIBLE);
+            }
+        }, 4000);
+
+        //start animation and music
+        startCountAnimation();
+
+        // if best score
+        if (score > bestScore){
+            //SystemClock.sleep(2000);
+            bestScoreCountingTv.setVisibility(View.VISIBLE);
+            bestScoreCountingTv.postDelayed(new Runnable() {
+                public void run() {
+                    bestScoreCountingTv.setVisibility(View.INVISIBLE);
+                }
+            }, 4000);
+            cupIm.setVisibility(View.VISIBLE);
+            cupIm.postDelayed(new Runnable() {
+                public void run() {
+                    cupIm.setVisibility(View.INVISIBLE);
+                }
+            }, 4000);
+            countingSound = MediaPlayer.create(EndGame.this, R.raw.level_up_sound);
+            if (!mute) {
+                countingSound.start();
+            } else {
+                muteBtn.setBackgroundResource(R.drawable.mute_btn_2);
+            }
+
+        }
+
+
+
+
     }
 
-    public void showLeaderboard(View view) {
-        showLeaderboard();
-    }
+    private void startCountAnimation() {
+        countingSound = MediaPlayer.create(EndGame.this, R.raw.counting_sound);
+        if (!mute) {
+            countingSound.start();
+            //countingSound.setLooping(true);
+        } else {
+            muteBtn.setBackgroundResource(R.drawable.mute_btn_2);
+        }
+
+        TextView textView = (TextView) findViewById(R.id.textView);
+        ValueAnimator animator = ValueAnimator.ofInt(0, score); //0 is min number, 600 is max number
+        animator.setDuration(1000); //Duration is in milliseconds
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            public void onAnimationUpdate(ValueAnimator animation) {
+                textView.setText(animation.getAnimatedValue().toString());
+            }
+        });
+        animator.start();
+        //SystemClock.sleep(1000);
+        //countingSound.stop();
 
 
-    public void signbtnOnCLick(View view) {
-           }
+
     }
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        isVisible = hasFocus;
+        if (!isVisible) {
+            countingSound.pause();
+        } else {
+            //mainActivityBackgroud.start();
+        }
+
+
+    }
+
+    }
+
 
 
 
