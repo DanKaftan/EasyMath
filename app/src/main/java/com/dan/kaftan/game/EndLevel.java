@@ -2,28 +2,35 @@ package com.dan.kaftan.game;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
+import android.graphics.ImageFormat;
 import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+//import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class EndLevel extends AppCompatActivity {
 
-    ImageButton nextLevelBtn;
-    ImageButton menuBtn;
+    Button nextLevelBtn;
+    Button menuBtn;
     int levelNum;
 
     boolean isLevel;
     boolean mute;
     boolean levelPassed;
 
-    ImageView answer_iv;
+    TextView answer_tv;
     ImageView threeStarsIv;
     private FirebaseAnalytics mFirebaseAnalytics;
 
@@ -49,23 +56,13 @@ public class EndLevel extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
-
-        try {
-            if (Game.interstitialAd != null && Game.interstitialAd.isLoaded()) {
-                Game.interstitialAd.show();
-            }
-        }catch (Exception e){
-            // never mind, it is just an Ad...
-        }
-
-
-
-        menuBtn = (ImageButton) findViewById(R.id.menu_btn);
-        nextLevelBtn = (ImageButton) findViewById(R.id.next_level_btn);
+        menuBtn = (Button) findViewById(R.id.menu_btn);
+        nextLevelBtn = (Button) findViewById(R.id.next_level_btn);
         threeStarsIv = (ImageView)findViewById(R.id.three_stars_iv);
 
-        answer_iv = (ImageView) findViewById(R.id.answer_iv_end_level);
+        answer_tv = (TextView) findViewById(R.id.answer_iv_end_level);
 
+        showAd();
 
 
         Intent a = getIntent();
@@ -74,25 +71,24 @@ public class EndLevel extends AppCompatActivity {
         levelPassed = a.getBooleanExtra("levelPassed", levelPassed);
         levelNum = a.getIntExtra("levelNum", 0 );
 
-        startMusic();
-
 
         if (levelPassed){
-            answer_iv.setImageResource(R.drawable.level_passed);
-            nextLevelBtn.setImageResource(R.drawable.next_level_btn);
+            answer_tv.setText(R.string.levelpassed);
+            answer_tv.setTextColor(Color.GREEN);
+            nextLevelBtn.setText(R.string.nextlevel);
             threeStarsIv.setVisibility(View.VISIBLE);
             modifyLevelPassedToFireBase();
         }
         else {
-            answer_iv.setImageResource(R.drawable.level_failed);
-            nextLevelBtn.setImageResource(R.drawable.try_again_btn);
+            answer_tv.setText(R.string.levelfaild);
+            answer_tv.setTextColor(Color.RED);
+            nextLevelBtn.setText(R.string.tryagain);
             threeStarsIv.setVisibility(View.INVISIBLE);
 
         }
 
         if (levelNum == 21){
-            answer_iv.setImageResource(R.drawable.end_levels_pic);
-            answer_iv.setImageResource(R.drawable.level_finished_txt);
+            answer_tv.setText(R.string.alllevelsdone);
             nextLevelBtn.setVisibility(View.INVISIBLE);
         }
 
@@ -120,10 +116,30 @@ public class EndLevel extends AppCompatActivity {
         Intent i = new Intent(EndLevel.this, LevelInterducerActivity.class);
         i.putExtra("isLevel", isLevel);
         i.putExtra("mute", mute);
-        i.putExtra("levelNum", levelNum+1);
+        i.putExtra("levelPassed", levelPassed);
+        i.putExtra("chosenOperator", getChosenOperator());
+        System.out.println(getChosenOperator());
+        i.putExtra("difficulty", getDifficulty());
+        if (levelPassed){
+            i.putExtra("levelNum", levelNum+1);
+
+        }
+        else{
+            i.putExtra("levelNum", levelNum);
+        }
         if (levelNum <= 21){
             startActivity(i);
         }
+    }
+
+    private String getChosenOperator(){
+        Intent i = getIntent();
+        return i.getStringExtra("chosenOperator");
+    }
+
+    private String getDifficulty(){
+        Intent i = getIntent();
+        return i.getStringExtra("difficulty");
     }
 
     @Override
@@ -152,5 +168,23 @@ public class EndLevel extends AppCompatActivity {
         }
 
 
+    }
+
+    private void showAd(){
+        InterstitialAd mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-7775472521601802/6183325504");
+        AdRequest adRequestInter = new AdRequest.Builder().build();
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                mInterstitialAd.show();
+            }
+            @Override
+            public void onAdClosed()
+            {
+                startMusic();
+            }
+        });
+        mInterstitialAd.loadAd(adRequestInter);
     }
 }

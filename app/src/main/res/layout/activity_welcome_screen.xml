@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     android:background="@drawable/end_game_background"
     android:layoutDirection="ltr"
-    tools:context=".welcome_screen"
-    android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen">
+    android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen"
+    tools:context=".welcome_screen">
 
 
     <ImageView
@@ -17,8 +17,10 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="15dp"
         android:background="@drawable/new_background"
         android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/tv2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,21 +28,19 @@
 
     <TextView
         android:id="@+id/tv2"
-        android:layout_width="216dp"
-        android:layout_height="23dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/open_text"
+        android:layout_width="433dp"
+        android:layout_height="35dp"
+        android:fontFamily="@font/chalkboard"
+        android:gravity="center"
+        android:text="Made by: Dan Kaftan"
         android:textAlignment="center"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/iv"
+        app:layout_constraintVertical_bias="0.542" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"

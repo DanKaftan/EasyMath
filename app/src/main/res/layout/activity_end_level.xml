@@ -20,38 +20,46 @@
         <ImageView
             android:id="@+id/three_stars_iv"
             android:layout_width="372dp"
-            android:layout_height="115dp"
-            android:layout_marginTop="0dp"
+            android:layout_height="97dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
             ads:srcCompat="@drawable/three_stars" />
 
-        <ImageView
+        <TextView
             android:id="@+id/answer_iv_end_level"
-            android:layout_width="329dp"
-            android:layout_height="139dp"
-            android:layout_marginTop="5dp"
-            ads:srcCompat="@drawable/level_passed" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/bubblegum_sans"
+            android:gravity="center"
+            android:text="@string/levelpassed"
+            android:textColor="#00C130"
+            android:textSize="50sp" />
 
-        <ImageButton
+        <Button
             android:id="@+id/menu_btn"
-            android:layout_width="180dp"
-            android:layout_height="60dp"
-            android:layout_marginBottom="4dp"
-            android:adjustViewBounds="true"
-            android:background="@drawable/a"
+            android:layout_width="178dp"
+            android:layout_height="53dp"
+            android:background="@drawable/plain_new_game_btn"
+            android:fontFamily="@font/chalkboard"
             android:onClick="menuBtnOnClick"
-            android:scaleType="centerInside"
-            app:srcCompat="@drawable/menu_btn" />
+            android:layout_marginBottom="10dp"
+            android:text="@string/homepage"
+            android:textColor="#FFFFFF"
+            android:textSize="25sp" />
 
-        <ImageButton
+        <Button
             android:id="@+id/next_level_btn"
-            android:layout_width="180dp"
-            android:layout_height="60dp"
-            android:layout_marginBottom="0dp"
-            android:adjustViewBounds="true"
-            android:background="@drawable/a"
+            android:layout_width="178dp"
+            android:layout_height="53dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/practice_button_im_no_icon"
+            android:fontFamily="@font/chalkboard"
             android:onClick="nextLevelBtnOnCLick"
-            android:scaleType="centerInside"
-            app:srcCompat="@drawable/next_level_btn" />
+            android:text="@string/nextlevel"
+            android:textColor="#FFFFFF"
+            android:textSize="25sp" />
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

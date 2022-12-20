@@ -6,16 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/new_end_game_background"
     android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen"
-    >
-
-    <ImageView
-        android:id="@+id/bubble_iv"
-        android:layout_width="246dp"
-        android:layout_height="158dp"
-        android:layout_marginStart="28dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mute_btn"
-        app:srcCompat="@drawable/settings_bubble" />
+    app:layout_anchorGravity="center_vertical">
 
     <ImageView
         android:id="@+id/imageView3"
@@ -61,20 +52,11 @@
         android:orientation="vertical"
         app:layout_constraintGuide_begin="15dp" />
 
-    <Button
-        android:id="@+id/settings_confirm_btn"
-        android:layout_width="82dp"
-        android:layout_height="29dp"
-        android:layout_marginTop="4dp"
-        android:background="@drawable/confirm_btn_settings"
-        android:onClick="settingsBtnMain"
-        app:layout_constraintEnd_toEndOf="@+id/bubble_iv"
-        app:layout_constraintStart_toStartOf="@+id/bubble_iv"
-        app:layout_constraintTop_toBottomOf="@+id/bubble_iv" />
-
     <LinearLayout
+        android:id="@+id/linearLayout3"
         android:layout_width="210dp"
         android:layout_height="160dp"
+        android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -82,19 +64,73 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView3">
 
-        <Button
-            android:id="@+id/menu_iv"
-            android:layout_width="210dp"
-            android:layout_height="76dp"
-            android:background="@drawable/practice_btn_theme"
-            android:onClick="startGameClick" />
+        <LinearLayout
+            android:layout_width="180dp"
+            android:layout_height="55dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/practice_button_im_no_icon"
+            android:onClick="startGameClick"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/lv_btn"
-            android:layout_width="210dp"
-            android:layout_height="76dp"
-            android:background="@drawable/levels_btn_theme"
-            android:onClick="levelOnClick" />
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="124dp"
+                android:layout_height="55dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+
+                android:layout_weight="1"
+                android:fontFamily="@font/chalkboard"
+                android:gravity="center"
+                android:text="@string/Practice"
+                android:textAlignment="gravity"
+                android:textColor="#FFFFFF"
+                android:textSize="25sp" />
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/kid_icon" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="180dp"
+            android:layout_height="55dp"
+            android:background="@drawable/levels_button_im_no_icon"
+            android:onClick="levelOnClick"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="56dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/chalkboard"
+                android:gravity="center"
+                android:text="@string/Levels"
+                android:textAlignment="gravity"
+                android:textColor="#FFFFFF"
+                android:textSize="25sp" />
+
+            <ImageView
+                android:id="@+id/imageView7"
+                android:layout_width="2dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center|right"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/trophy" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
 

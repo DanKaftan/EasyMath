@@ -14,17 +14,15 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchasesUpdatedListener;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.drive.Drive;
-import com.google.android.gms.games.Games;
-import com.google.android.gms.games.GamesClient;
+import com.google.android.play.core.review.ReviewManagerFactory;
+
+
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -34,14 +32,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+
 public class MainActivity extends AppCompatActivity {
 
 
     Button settingsBtn;
     Button muteBtn;
-    Button levelBtn;
-    Button confirmBubbleBtn;
-    ImageView settingsBubble;
     int i = 0;
     private static final String TAG = "MainActivity";
     MediaPlayer mainActivityBackgroud;
@@ -54,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
 
     GoogleSignInClient mGoogleSignInClient;
     // Request code used to invoke sign in user interactions.
-
 
 
 
@@ -79,18 +74,20 @@ public class MainActivity extends AppCompatActivity {
         // rotate screen
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
+        MobileAds.initialize(this, "ca-app-pub-7775472521601802~2555137966");
+
+
 
 
 
         settingsBtn = (Button) findViewById(R.id.settings_btn_main);
         muteBtn = (Button) findViewById(R.id.mute_btn);
-        levelBtn = (Button) findViewById(R.id.lv_btn);
 
         Intent muteIntent = getIntent(); // gets the previously created intent
         mute = muteIntent.getBooleanExtra("mute", false);
 
 
-        mainActivityBackgroud = MediaPlayer.create(MainActivity.this, R.raw.free_synthwave_loop);
+        mainActivityBackgroud = MediaPlayer.create(MainActivity.this, R.raw.main_activity_music);
         click = MediaPlayer.create(MainActivity.this, R.raw.click_main);
 
         if (!mute) {
@@ -104,24 +101,19 @@ public class MainActivity extends AppCompatActivity {
 
         makeLevelFile();
 
-
         if (welcome_screen.ismulty) {
 
             // menuIv.setImageResource(R.drawable.multiplication_icon);
         }
 
-
-        confirmBubbleBtn = (Button) findViewById(R.id.settings_confirm_btn);
-        settingsBubble = (ImageView) findViewById(R.id.bubble_iv);
         checkIsFirstVisitFile();
         if (!isFirstVisit) {
-            confirmBubbleBtn.setVisibility(View.INVISIBLE);
-            settingsBubble.setVisibility(View.INVISIBLE);
         } else {
             saveIsFirstVisitFile();
         }
 
-
+        InAppReview inAppReview = new InAppReview(this);
+        inAppReview.startReview();
 
     }
 
@@ -130,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
         if (!mute) {
             click.start();
         }
-        Intent i = new Intent(MainActivity.this, Game.class);
+        Intent i = new Intent(MainActivity.this, PracticeMenu.class);
         i.putExtra("mute", mute);
         startActivity(i);
 
@@ -180,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
             click.start();
         }
         mainActivityBackgroud.stop();
-        Intent i = new Intent(MainActivity.this, LevelsMenu.class);
+        Intent i = new Intent(MainActivity.this, PracticeMenu.class);
         i.putExtra("mute", mute);
         i.putExtra("isLevel", isLevel);
         i.putExtra("isFirstVisit", isFirstVisit);
@@ -304,10 +296,9 @@ public class MainActivity extends AppCompatActivity {
     public void settingsBtnMain(View view) {
         if (isFirstVisit) {
             saveIsFirstVisitFile();
-            confirmBubbleBtn.setVisibility(View.INVISIBLE);
-            settingsBubble.setVisibility(View.INVISIBLE);
         }
     }
+
 
 
 }

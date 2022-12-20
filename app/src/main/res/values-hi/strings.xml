@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MathGame</string>
+    <string name="leaderboard_id">CgkIzZfT9PUaEAIQAA</string>
+    <string name="Practice">अभ्यास</string>
+    <string name="Levels">स्तरों</string>
+    <string name="Settings">समायोजन</string>
+    <string name="Difficulty">कठिनाई:</string>
+    <string name="Timer_On_Off">टाइमर चालू/बंद:</string>
+    <string name="Timer">टाइमर:</string>
+    <string name="Level">स्तर</string>
+    <string name="finalscore">अंतिम स्कोर</string>
+    <string name="bestscore">सर्वश्रेष्ठ अंक</string>
+    <string name="startnewgame">नया खेल शुरू करें</string>
+    <string name="yourfinalscoreis">आपका अंतिम स्कोर है:</string>
+    <string name="newbestscore">नया सर्वश्रेष्ठ स्कोर!</string>
+    <string name="confirm">पुष्टि करें</string>
+    <string name="menu">मेन्यू</string>
+    <string name="nextlevel">अगला स्तर</string>
+    <string name="tryagain">पुनः प्रयास करें</string>
+    <string name="score">अंक</string>
+    <string name="Done">पूर्ण!</string>
+    <string name="homepage">होम पेज</string>
+    <string name="levelpassed">स्तर पारित!</string>
+    <string name="levelfaild">लेवल विफल</string>
+    <string name="upto5">5 तक</string>
+    <string name="upto10">10 तक</string>
+    <string name="upto20">20 तक</string>
+    <string name="upto50">50 तक</string>
+    <string name="upto100">100 तक</string>
+    <string name="title_activity_wrong_answer">गलत जवाब</string>
+    <string name="alllevelsdone">सभी स्तरों को पूरा किया!</string>
+    <string name="addition">योग</string>
+    <string name="subtraction">घटाव</string>
+    <string name="multiplication">गुणा</string>
+    <string name="division">विभाजन</string>
+    <string name="changelanguage">भाषा बदलो</string>
+    <string name="changesubjectsanddifficulty">विषय और कठिनाई बदलें</string>
+    <string name="SetTimer">टाइमर लगाएं</string>
+    <string name="unlimitedtime">असीमित समय</string>
+    <string name="whatsubjectswouldyouliketolearn">आप कौन से विषय सीखना चाहेंगे?</string>
+    <string name="choosedifficulty">व्यायाम कठिनाई चुनें (अधिकतम परिणाम)</string>
+    <string name="youcanchangethissettings">आप सेटिंग पृष्ठ पर उन सेटिंग को कभी भी बदल सकते हैं</string>
+    <string name="whatsubjectswouldyouliketopractice">अब आप किस विषय का अभ्यास करना चाहेंगे?</string>
+    <string name="multiplicationtable">(पहाड़ा)</string>
+
+
+
+</resources>

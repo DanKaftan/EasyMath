@@ -13,13 +13,26 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 public class welcome_screen extends AppCompatActivity {
 
     ImageView iv;
     TextView tv2;
-    ImageView icon;
     MediaPlayer startGameMusic;
     static boolean ismulty = false;
+    boolean isFirstVisit = true;
+    private static final String FILE_NAME = "best_score.txt";
+    private static final String FIRST_VISIT_FILE_NAME = "isFirstVisitFile2.txt";
+
+
+
+
 
 
     @Override
@@ -36,6 +49,19 @@ public class welcome_screen extends AppCompatActivity {
         setContentView(R.layout.activity_welcome_screen);
         getSupportActionBar().hide();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+
+        checkIsFirstVisitFile();
+        if (isFirstVisit){
+            createLevelsFile();
+            saveIsFirstVisitFile();
+            saveBestScore();
+
+        }
+
+
+
+
         iv = (ImageView) findViewById(R.id.iv);
         tv2 = (TextView) findViewById(R.id.tv2);
         Animation myanim = AnimationUtils.loadAnimation(this, R.anim.mytransition);
@@ -51,8 +77,68 @@ public class welcome_screen extends AppCompatActivity {
 
     }
 
+    private void saveIsFirstVisitFile() {
+        FileOutputStream fos = null;
+
+
+        try {
+            fos = openFileOutput(FIRST_VISIT_FILE_NAME, MODE_PRIVATE);
+            fos.write("clicked".getBytes());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fos != null) {
+
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+    }
+
+    private void checkIsFirstVisitFile() {
+        FileInputStream fis = null;
+        try {
+            fis = openFileInput(FIRST_VISIT_FILE_NAME);
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader br = new BufferedReader(isr);
+            StringBuilder sb = new StringBuilder();
+            String text;
+            while ((text = br.readLine()) != null) {
+
+                sb.append(text);
+                String s = sb.toString();
+                isFirstVisit = !s.equals("clicked");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fis != null) {
+
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+            }
+        }
+    }
+
     public void swichActivity() {
-        final Intent i = new Intent(welcome_screen.this, MainActivity.class);
+        Intent i;
+        if (isFirstVisit) {
+            i = new Intent(welcome_screen.this, FirstOpenActivity.class);
+
+        } else {
+            i = new Intent(welcome_screen.this, MainActivity.class);
+            saveIsFirstVisitFile();
+        }
 
         Thread timer = new Thread() {
             public void run() {
@@ -75,6 +161,107 @@ public class welcome_screen extends AppCompatActivity {
             }
         };
         timer.start();
+    }
+
+    private void saveBestScore() {
+
+        FileOutputStream fos = null;
+
+        try {
+            fos = openFileOutput(FILE_NAME, MODE_PRIVATE);
+            fos.write("+,upto5,0".getBytes());
+            fos.write(10);
+            fos.write("+,upto10,0".getBytes());
+            fos.write(10);
+            fos.write("+,upto20,0".getBytes());
+            fos.write(10);
+            fos.write("+,upto50,0".getBytes());
+            fos.write(10);
+            fos.write("+,upto100,0".getBytes());
+            fos.write(10);
+            fos.write("-,upto5,0".getBytes());
+            fos.write(10);
+            fos.write("-,upto10,0".getBytes());
+            fos.write(10);
+            fos.write("-,upto20,0".getBytes());
+            fos.write(10);
+            fos.write("-,upto50,0".getBytes());
+            fos.write(10);
+            fos.write("-,upto100,0".getBytes());
+            fos.write(10);
+            fos.write("*,upto5,0".getBytes());
+            fos.write(10);
+            fos.write("*,upto10,0".getBytes());
+            fos.write(10);
+            fos.write("*,upto20,0".getBytes());
+            fos.write(10);
+            fos.write("*,upto50,0".getBytes());
+            fos.write(10);
+            fos.write("*,upto100,0".getBytes());
+            fos.write(10);
+            fos.write("/,upto5,0".getBytes());
+            fos.write(10);
+            fos.write("/,upto10,0".getBytes());
+            fos.write(10);
+            fos.write("/,upto20,0".getBytes());
+            fos.write(10);
+            fos.write("/,upto50,0".getBytes());
+            fos.write(10);
+            fos.write("/,upto100,0".getBytes());
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fos != null) {
+
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+
+
+    }
+
+    private void createLevelsFile() {
+
+        FileOutputStream fos = null;
+
+        try {
+            fos = openFileOutput("level", MODE_PRIVATE);
+            fos.write("+,1".getBytes());
+            fos.write(10);
+            fos.write("-,1".getBytes());
+            fos.write(10);
+            fos.write("*,1".getBytes());
+            fos.write(10);
+            fos.write("/,1".getBytes());
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fos != null) {
+
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+
+
+
+
     }
 
 

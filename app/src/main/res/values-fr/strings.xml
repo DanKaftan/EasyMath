@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MathGame</string>
+    <string name="Practice">Pratique</string>
+    <string name="Levels">Niveaux</string>
+    <string name="Settings">Réglages</string>
+    <string name="Difficulty">Difficulté:</string>
+    <string name="Timer_On_Off">Minuterie Marche/Arrêt :</string>
+    <string name="Timer">Minuteur</string>
+    <string name="Level">Niveau</string>
+    <string name="finalscore">score final</string>
+    <string name="bestscore">meilleur score</string>
+    <string name="startnewgame">Commencer une nouvelle partie</string>
+    <string name="yourfinalscoreis">votre note finale est:</string>
+    <string name="newbestscore">Nouveau meilleur score !</string>
+    <string name="confirm">confirmer</string>
+    <string name="menu">menu</string>
+    <string name="nextlevel">niveau suivant</string>
+    <string name="tryagain">réessayer</string>
+    <string name="score">score</string>
+    <string name="Done">Fait!</string>
+    <string name="homepage">Page d\'accueil</string>
+    <string name="levelpassed">Niveau passé !</string>
+    <string name="levelfaild">Niveau échoué</string>
+    <string name="upto5">jusqu\'à 5</string>
+    <string name="upto10">jusqu\'à 10</string>
+    <string name="upto20">jusqu\'à 20</string>
+    <string name="upto50">jusqu\'à 50</string>
+    <string name="upto100">jusqu\'à 100</string>
+    <string name="title_activity_wrong_answer">mauvaise réponse</string>
+    <string name="alllevelsdone">Tous les niveaux terminés!</string>
+    <string name="leaderboard_id">CgkIzZfT9PUaEAIQAA</string>
+    <string name="addition">Ajout</string>
+    <string name="subtraction">Soustraction</string>
+    <string name="multiplication">Multiplication</string>
+    <string name="division">Division</string>
+    <string name="changelanguage">changer de langue</string>
+    <string name="changesubjectsanddifficulty">Changer de sujet et de difficulté</string>
+    <string name="SetTimer">Régler la minuterie</string>
+    <string name="unlimitedtime">Temps illimité</string>
+    <string name="whatsubjectswouldyouliketolearn">Quelles matières aimeriez-vous apprendre?</string>
+    <string name="choosedifficulty">choisir la difficulté des exercices (résultat maximum)</string>
+    <string name="youcanchangethissettings">Vous pouvez toujours modifier ces paramètres sur la page des paramètres</string>
+    <string name="whatsubjectswouldyouliketopractice">Quelle matière voudriez-vous pratiquer maintenant ?</string>
+    <string name="multiplicationtable">(Table de multiplication)</string>
+
+
+</resources>

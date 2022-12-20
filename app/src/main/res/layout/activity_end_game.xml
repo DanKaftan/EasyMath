@@ -19,7 +19,10 @@
             android:id="@+id/textView6"
             android:layout_width="100dp"
             android:layout_height="29dp"
-            android:background="@drawable/best_score"
+            android:background="@drawable/score_tv_bc"
+            android:gravity="center"
+            android:text="@string/bestscore"
+            android:textColor="#FFFFFF"
             app:layout_constraintEnd_toEndOf="@+id/tvBestScore"
             app:layout_constraintStart_toStartOf="@+id/tvBestScore"
             app:layout_constraintTop_toBottomOf="@+id/tvBestScore" />
@@ -85,7 +88,10 @@
             android:id="@+id/finalscoretv"
             android:layout_width="100dp"
             android:layout_height="29dp"
-            android:background="@drawable/final_score"
+            android:background="@drawable/score_tv_bc"
+            android:gravity="center"
+            android:text="@string/finalscore"
+            android:textColor="#FFFFFF"
             app:layout_constraintEnd_toEndOf="@+id/tvFinalScore"
             app:layout_constraintStart_toStartOf="@+id/tvFinalScore"
             app:layout_constraintTop_toBottomOf="@+id/tvFinalScore" />
@@ -117,11 +123,15 @@
 
         <Button
             android:id="@+id/btnStartNewGame"
-            android:layout_width="227dp"
-            android:layout_height="55dp"
+            android:layout_width="240dp"
+            android:layout_height="60dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/start_new_game"
+            android:background="@drawable/plain_new_game_btn"
+            android:fontFamily="@font/chalkboard"
             android:onClick="startNewGameOnCLick"
+            android:text="@string/startnewgame"
+            android:textColor="#FFFFFF"
+            android:textSize="25sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -199,7 +209,7 @@
             android:layout_height="310dp"
             android:gravity="center"
             android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="@+id/btnStartNewGame"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
@@ -208,13 +218,13 @@
 
             <TextView
                 android:id="@+id/textView3"
-                android:layout_width="378dp"
+                android:layout_width="465dp"
                 android:layout_height="85dp"
                 android:fontFamily="@font/gummy_bears"
                 android:gravity="center"
-                android:text="Your final score is:"
+                android:text="@string/yourfinalscoreis"
                 android:textColor="#66D2FC"
-                android:textSize="50sp" />
+                android:textSize="40sp" />
 
             <TextView
                 android:id="@+id/textView"
@@ -239,7 +249,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/gummy_bears"
                     android:gravity="center"
-                    android:text="New Best Score!"
+                    android:text="@string/newbestscore"
                     android:textColor="#FEE537"
                     android:textSize="40sp" />
 

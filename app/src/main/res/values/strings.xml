@@ -1,5 +1,52 @@
 <resources>
     <string name="app_name">MathGame</string>
-    <string name="title_activity_wrong_answer">wrong_answer</string>
     <string name="leaderboard_id">CgkIzZfT9PUaEAIQAA</string>
+    <string name="Practice">Practice</string>
+    <string name="Levels">Levels</string>
+    <string name="Settings">Settings</string>
+    <string name="Difficulty">Difficulty:</string>
+    <string name="Timer_On_Off">Timer On/Off:</string>
+    <string name="Timer">Timer:</string>
+    <string name="Level">Level</string>
+    <string name="finalscore">final score</string>
+    <string name="bestscore">best score</string>
+    <string name="startnewgame">start new game</string>
+    <string name="yourfinalscoreis">your final score is:</string>
+    <string name="newbestscore">New best Score!</string>
+    <string name="confirm">confirm</string>
+    <string name="menu">menu</string>
+    <string name="nextlevel">next level</string>
+    <string name="tryagain">try again</string>
+    <string name="score">score</string>
+    <string name="Done">Done!</string>
+    <string name="homepage">Home page</string>
+    <string name="levelpassed">Level passed!</string>
+    <string name="levelfaild">Level faild</string>
+    <string name="upto5">up to 5</string>
+    <string name="upto10">up to 10</string>
+    <string name="upto20">up to 20</string>
+    <string name="upto50">up to 50</string>
+    <string name="upto100">up to 100</string>
+    <string name="title_activity_wrong_answer">wrong answer</string>
+    <string name="alllevelsdone">All levels done!</string>
+    <string name="addition">Addition</string>
+    <string name="subtraction">Subtraction</string>
+    <string name="multiplication">Multiplication</string>
+    <string name="division">Division</string>
+    <string name="changelanguage">change language</string>
+    <string name="changesubjectsanddifficulty">Change subjects and difficulty</string>
+    <string name="SetTimer">Set Timer</string>
+    <string name="unlimitedtime">Unlimited Time</string>
+    <string name="whatsubjectswouldyouliketolearn">What would you like to learn?</string>
+    <string name="choosedifficulty">choose exercises difficulty (max result)</string>
+    <string name="youcanchangethissettings">You can always change those settings at the settings page</string>
+    <string name="whatsubjectswouldyouliketopractice">What subject would you like to practice now?</string>
+    <string name="multiplicationtable">(Multiplication table)</string>
+    <string translatable="false"  name="game_services_project_id"> 925004778445 </string>
+
+
+
+
+
+
 </resources>

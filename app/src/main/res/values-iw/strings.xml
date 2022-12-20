@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MathGame</string>
+    <string name="Practice">תרגול</string>
+    <string name="Levels">שלבים</string>
+    <string name="Settings">הגדרות</string>
+    <string name="Difficulty">דרגת קושי</string>
+    <string name="Timer_On_Off">שעון פעיל/כבוי</string>
+    <string name="Timer">שעון</string>
+    <string name="Level">שלב</string>
+    <string name="finalscore">ניקוד סופי</string>
+    <string name="bestscore">ניקוד שיא</string>
+    <string name="startnewgame">משחק חדש</string>
+    <string name="yourfinalscoreis">הניקוד הסופי שלך הוא:</string>
+    <string name="newbestscore">שיא חדש!</string>
+    <string name="confirm">אישור</string>
+    <string name="menu">תפריט</string>
+    <string name="nextlevel">שלב הבא</string>
+    <string name="tryagain">נסה שוב</string>
+    <string name="score">נקודות</string>
+    <string name="Done">בוצע!</string>
+    <string name="upto5">עד 5</string>
+    <string name="upto10">עד 10</string>
+    <string name="upto20">עד 20</string>
+    <string name="upto50">עד 50</string>
+    <string name="upto100">עד 100</string>
+    <string name="homepage">מסך הבית</string>
+    <string name="levelpassed">השלב בוצע בהצלחה!</string>
+    <string name="levelfaild">נפסלת</string>
+    <string name="alllevelsdone">All levels done!</string>
+    <string name="title_activity_wrong_answer">wrong_answer</string>
+    <string name="leaderboard_id">CgkIzZfT9PUaEAIQAA</string>
+    <string name="addition">חיבור</string>
+    <string name="subtraction">חיסור</string>
+    <string name="multiplication">כפל</string>
+    <string name="division">חילוק</string>
+    <string name="changelanguage">שנה שפה</string>
+    <string name="changesubjectsanddifficulty">שנה נושאים ורמת קושי</string>
+    <string name="SetTimer">שנה את השעון</string>
+    <string name="unlimitedtime">זמן בלתי מוגבל</string>
+    <string name="whatsubjectswouldyouliketolearn">אילו נושאים תרצה ללמוד?</string>
+    <string name="choosedifficulty">בחר רמת קושי (תוצאה מקסימלית)</string>
+    <string name="youcanchangethissettings">תמיד תוכל לשנות את ההגדרות האלו בדף ההגדרות באפליקציה</string>
+    <string name="whatsubjectswouldyouliketopractice">איזה נושא תרצה לתרגל עכשיו?</string>
+    <string name="multiplicationtable">(לוח הכפל)</string>
+
+
+</resources>

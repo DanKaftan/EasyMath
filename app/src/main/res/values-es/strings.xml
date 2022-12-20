@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MathGame</string>
+    <string name="leaderboard_id">CgkIzZfT9PUaEAIQAA</string>
+    <string name="Practice">Práctica</string>
+    <string name="Levels">Niveles</string>
+    <string name="Settings">Ajustes</string>
+    <string name="Difficulty">Dificultad:</string>
+    <string name="Timer_On_Off">Temporizador de encendido/apagado:</string>
+    <string name="Timer">Temporizador:</string>
+    <string name="Level">Nivel</string>
+    <string name="finalscore">puntuación final</string>
+    <string name="bestscore">mejor puntuación</string>
+    <string name="startnewgame">empieza un juego nuevo</string>
+    <string name="yourfinalscoreis">tu puntuación final es:</string>
+    <string name="newbestscore">Nueva mejor puntuación!</string>
+    <string name="confirm">confirmar</string>
+    <string name="menu">menú</string>
+    <string name="nextlevel">siguiente nivel</string>
+    <string name="tryagain">intentar otra vez</string>
+    <string name="score">puntaje</string>
+    <string name="Done">¡Hecho!</string>
+    <string name="homepage">página de inicio</string>
+    <string name="levelpassed">¡Nivel superado!</string>
+    <string name="levelfaild">Nivel fracasado</string>
+    <string name="upto5">hasta 5</string>
+    <string name="upto10">hasta 10</string>
+    <string name="upto20">hasta 20</string>
+    <string name="upto50">hasta 50</string>
+    <string name="upto100">hasta 100</string>
+    <string name="title_activity_wrong_answer">respuesta incorrecta</string>
+    <string name="alllevelsdone">¡Todos los niveles terminados!</string>
+    <string name="addition">Suma</string>
+    <string name="subtraction">Sustracción</string>
+    <string name="multiplication">Multiplicación</string>
+    <string name="division">División</string>
+    <string name="changelanguage">cambiar idioma</string>
+    <string name="changesubjectsanddifficulty">Cambiar de tema y dificultad</string>
+    <string name="SetTimer">Establecer temporizador</string>
+    <string name="unlimitedtime">Tiempo ilimitado</string>
+    <string name="whatsubjectswouldyouliketolearn">¿Qué materias te gustaría aprender?</string>
+    <string name="choosedifficulty">elegir la dificultad de los ejercicios (resultado máximo)</string>
+    <string name="youcanchangethissettings">Siempre puede cambiar esa configuración en la página de configuración</string>
+    <string name="whatsubjectswouldyouliketopractice">¿Qué materia te gustaría practicar ahora?</string>
+    <string name="multiplicationtable">(Tabla de multiplicación)</string>
+
+
+</resources>

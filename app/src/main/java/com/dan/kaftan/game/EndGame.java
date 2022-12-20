@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -20,8 +22,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
@@ -33,9 +37,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.games.LeaderboardsClient;
 import com.google.android.play.core.review.ReviewInfo;
 import com.google.android.play.core.review.ReviewManager;
-import com.google.android.play.core.review.ReviewManagerFactory;
-import com.google.android.play.core.tasks.OnCompleteListener;
-import com.google.android.play.core.tasks.Task;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -43,6 +46,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class EndGame extends AppCompatActivity implements RewardedVideoAdListener {
@@ -55,7 +60,6 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
 
     int score = 0;
     int bestScore = 0;
-    int entersCounter = 0;
 
 
     Button btnShare;
@@ -67,12 +71,13 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
     Button startNewGameBtn;
 
 
-
     boolean revive = false;
     boolean mute;
     boolean isFromSettings = true;
 
     ImageView gameOverImg;
+
+    int linesCounter = 0;
 
 
     private RewardedVideoAd mRewardedVideoAd;
@@ -80,24 +85,26 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
     private static final String TAG = "MainActivity";
     private AdView mAdView;
 
+
+    // sounds
     MediaPlayer gameOverSound;
+    static MediaPlayer endGameMusic;
+    MediaPlayer countingSound;
 
-    ReviewManager manager;
-
-    ReviewInfo reviewInfo;
 
     boolean isVisible = true;
 
 
     GoogleSignInClient googleSignIn;
-    private static final int RC_SIGN_IN = 9001;
-    LeaderboardsClient leaderboardsClient;
-    GoogleSignInAccount signedInAccount;
-
-    MediaPlayer countingSound;
 
 
 
+    int difficulty = 10;
+    String operator = "+";
+
+    List<String> bestScoreList = new ArrayList<>();
+
+    InterstitialAd interstitialAd;
 
 
 
@@ -123,6 +130,7 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
     });
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // full screen
@@ -138,7 +146,7 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
         int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
         decorView.setSystemUiVisibility(uiOptions);
 
-
+        operator = getChosenOperator();
         // rotate screen
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
@@ -151,14 +159,18 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
         Intent i = getIntent();
         isFromSettings = i.getBooleanExtra("isFromSettings", true);
         mute = i.getBooleanExtra("mute", true);
+        difficulty = i.getIntExtra("difficulty", 10);
 
 
         gameOverSound = MediaPlayer.create(EndGame.this, R.raw.game_over_sound);
+        endGameMusic = MediaPlayer.create(EndGame.this, R.raw.main_activity_music);
+
 
 
         btnRevive = (Button) findViewById(R.id.btnrevive);
         mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
         mRewardedVideoAd.setRewardedVideoAdListener(this);
+
 
         rateStarBtn = (Button) findViewById(R.id.rate_star_btn);
         tvBestScore = (TextView) findViewById(R.id.tvBestScore);
@@ -170,15 +182,13 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
         startNewGameBtn = (Button) findViewById(R.id.btnStartNewGame);
         settingsBtn = (Button) findViewById(R.id.end_game_settings_btn);
 
-        setEntersCounter();
-
 
         copyReviveFromPrevActivity();
         if (revive) {
             btnRevive.setVisibility(View.GONE);
         }
         copyScoreFromPrevActivity();
-        init();
+        //init();
 
 
         setMute();
@@ -189,18 +199,19 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
 
         startSummery();
 
-        // show the ad
-        if (Game.interstitialAd.isLoaded() && !isFromSettings) {
-            Game.interstitialAd.show();
-        }
-
         if (!mute && !isFromSettings) {
-            //gameOverSound.start();
+            endGameMusic.setLooping(true);
         }
 
 
         if (bestScore < score) {
-            saveBestScore();
+            try {
+                saveBestScore();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             tvBestScore.setText(Integer.toString(score));
         } else {
             tvBestScore.setText(Integer.toString(bestScore));
@@ -223,6 +234,9 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
         });
 
         tr1.start();
+
+        modifyScoreToFireBase();
+
 
     }
 
@@ -267,6 +281,9 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
         Intent i = new Intent(EndGame.this, Game.class);
         i.putExtra("revive", false);
         i.putExtra("mute", mute);
+        i.putExtra("difficulty", Integer.toString(difficulty));
+        i.putExtra("chosenOperator", operator);
+        endGameMusic.pause();
         startActivity(i);
 
 
@@ -374,13 +391,24 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
     }
 
 
-    private void saveBestScore() {
+    private void saveBestScore() throws IOException {
+        String str = operator+",upto"+Integer.toString(difficulty)+",";
 
-        FileOutputStream fos = null;
+        FileOutputStream fos = openFileOutput(FILE_NAME, MODE_PRIVATE);
 
         try {
-            fos = openFileOutput(FILE_NAME, MODE_PRIVATE);
-            fos.write(Integer.toString(score).getBytes());
+            for (int i = 0; i<bestScoreList.size(); i++){
+                String[] parts = bestScoreList.get(i).split(",");
+                String textOperator = parts[0];
+                String textDiff = parts[1];
+                String textBestScore = parts[2];
+                if (textOperator.equals(operator) && textDiff.equals("upto"+ difficulty)){
+                    fos.write((str+ Integer.toString(score)).getBytes());
+                } else {
+                    fos.write((bestScoreList.get(i)).getBytes());
+                }
+                fos.write(10);
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -397,7 +425,6 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
             }
         }
 
-
     }
 
     private void getBestScore() {
@@ -408,10 +435,18 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
             BufferedReader br = new BufferedReader(isr);
             StringBuilder sb = new StringBuilder();
             String text;
+            linesCounter = 0;
             while ((text = br.readLine()) != null) {
-
-                sb.append(text);
-                bestScore = Integer.parseInt(sb.toString());
+                bestScoreList.add(text);
+                String[] parts = text.split(",");
+                String textOperator = parts[0];
+                String textDiff = parts[1];
+                String textBestScore = parts[2];
+                if (textOperator.equals(operator) && textDiff.equals("upto"+ difficulty)){
+                    bestScore = Integer.parseInt(textBestScore.toString());
+                } else{
+                    linesCounter++;
+                }
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -431,6 +466,7 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
 
 
     public void settingsBtnEndGame(View view) {
+        endGameMusic.pause();
         Intent intent = new Intent(EndGame.this, Settings.class);
         intent.putExtra("isFromEnd", true);
         intent.putExtra("score", score);
@@ -453,9 +489,11 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
     public void muteOnClick(View view) {
         if (mute) {
             muteBtn.setBackgroundResource(R.drawable.unmute_btn);
+            endGameMusic.start();
             mute = false;
         } else {
             muteBtn.setBackgroundResource(R.drawable.mute_btn_2);
+            endGameMusic.pause();
             mute = true;
         }
     }
@@ -470,44 +508,14 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
     }
 
     public void homeBtnOnClick(View view) {
-
+        endGameMusic.stop();
         Intent i = new Intent(EndGame.this, MainActivity.class);
+        i.putExtra("mute", mute);
         startActivity(i);
     }
 
 
-    private void setEntersCounter() {
-        FileInputStream fis = null;
-        try {
-            fis = openFileInput("level");
-            InputStreamReader isr = new InputStreamReader(fis);
-            BufferedReader br = new BufferedReader(isr);
-            StringBuilder sb = new StringBuilder();
-            String text;
-            while ((text = br.readLine()) != null) {
-
-                sb.append(text);
-                entersCounter = Integer.parseInt(sb.toString());
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (fis != null) {
-
-                try {
-                    fis.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                entersCounter = 0;
-            }
-        }
-    }
-
-    private void init() {
+ /*   private void init() {
         manager = ReviewManagerFactory.create(this);
         Task<ReviewInfo> request = manager.requestReviewFlow();
         request.addOnCompleteListener(new OnCompleteListener<ReviewInfo>() {
@@ -523,19 +531,21 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
         });
 
 
-    }
+    }*/
 
-    public void btnOnclick(View view) {
+    /*public void btnOnclick(View view) {
         Task<Void> flow = manager.launchReviewFlow(EndGame.this, reviewInfo);
         flow.addOnCompleteListener(task -> {
             // The flow has finished. The API does not indicate whether the user
             // reviewed or not, or even whether the review dialog was shown. Thus, no
             // matter the result, we continue our app flow.
         });
-    }
+    }*/
 
     public void homeBtnOnClickEndGame(View view) {
+        endGameMusic.stop();
         Intent i = new Intent(EndGame.this, MainActivity.class);
+        i.putExtra("mute", mute);
         startActivity(i);
     }
 
@@ -644,6 +654,26 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
                 countingScoreTv.setVisibility(View.INVISIBLE);
             }
         }, 4000);
+        countingScoreTv.postDelayed(new Runnable() {
+            public void run() {
+                InterstitialAd mInterstitialAd = new InterstitialAd(EndGame.this);
+                mInterstitialAd.setAdUnitId("ca-app-pub-7775472521601802/2796958344");
+                AdRequest adRequestInter = new AdRequest.Builder().build();
+                mInterstitialAd.setAdListener(new AdListener() {
+                    @Override
+                    public void onAdLoaded() {
+                        mInterstitialAd.show();
+                    }
+                    @Override
+                    public void onAdClosed()
+                    {
+                        endGameMusic.start();
+                    }
+                });
+                mInterstitialAd.loadAd(adRequestInter);
+            }
+        }, 4000);
+
 
         //start animation and music
         startCountAnimation();
@@ -713,7 +743,20 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
 
     }
 
+    private String getChosenOperator(){
+        Intent i = getIntent();
+        return i.getStringExtra("chosenOperator");
     }
+
+    private void modifyScoreToFireBase() {
+        FirebaseAnalytics mFirebaseAnalytics;
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Bundle bundle = new Bundle();
+        bundle.putLong(FirebaseAnalytics.Param.SCORE, score);
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.POST_SCORE, bundle);
+    }
+
+}
 
 
 

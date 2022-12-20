@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MathGame</string>
+    <string name="leaderboard_id">CgkIzZfT9PUaEAIQAA</string>
+    <string name="Practice">يمارس</string>
+    <string name="Levels">المستويات</string>
+    <string name="Settings">إعدادات</string>
+    <string name="Difficulty">صعوبة:</string>
+    <string name="Timer_On_Off">مؤقت تشغيل / إيقاف:</string>
+    <string name="Timer">الموقت:</string>
+    <string name="Level">مستوى</string>
+    <string name="finalscore">النتيجة النهائية</string>
+    <string name="bestscore">أفضل نتيجة</string>
+    <string name="startnewgame">ابدأ لعبة جديدة</string>
+    <string name="yourfinalscoreis">نتيجتك النهائية هي:</string>
+    <string name="newbestscore">أفضل نتيجة جديدة!</string>
+    <string name="confirm">تؤكد</string>
+    <string name="menu">قائمة</string>
+    <string name="nextlevel">المرحلة التالية</string>
+    <string name="tryagain">حاول مرة أخرى</string>
+    <string name="score">نتيجة</string>
+    <string name="Done">فعله!</string>
+    <string name="homepage">الصفحة الرئيسية</string>
+    <string name="levelpassed">مر المستوى!</string>
+    <string name="levelfaild">فشل المستوى</string>
+    <string name="upto5">ما يصل الى 5</string>
+    <string name="upto10">ما يصل الى 10</string>
+    <string name="upto20">ما يصل الى 20</string>
+    <string name="upto50">ما يصل الى 50</string>
+    <string name="upto100">ما يصل الى 100</string>
+    <string name="title_activity_wrong_answer">إجابة خاطئة</string>
+    <string name="alllevelsdone">تم الانتهاء من جميع المستويات!</string>
+    <string name="addition">إضافة</string>
+    <string name="subtraction">الطرح</string>
+    <string name="multiplication">عمليه الضرب</string>
+    <string name="division">قسم</string>
+    <string name="changelanguage">تغيير اللغة</string>
+    <string name="changesubjectsanddifficulty">تغيير المواضيع والصعوبة</string>
+    <string name="SetTimer">توقيت مجموعة</string>
+    <string name="unlimitedtime">وقت غير محدود</string>
+    <string name="whatsubjectswouldyouliketolearn">ما هي الموضوعات التي ترغب في تعلمها؟</string>
+    <string name="choosedifficulty">اختيار صعوبة التمارين (النتيجة القصوى)</string>
+    <string name="youcanchangethissettings">يمكنك دائمًا تغيير هذه الإعدادات في صفحة الإعدادات</string>
+    <string name="whatsubjectswouldyouliketopractice">ما الموضوع الذي ترغب في التدرب عليه الآن؟</string>
+    <string name="multiplicationtable">(جدول الضرب)</string>
+
+
+</resources>

@@ -10,8 +10,8 @@
 
     <TextView
         android:id="@+id/level_tv_int"
-        android:layout_width="600dp"
-        android:layout_height="307dp"
+        android:layout_width="658dp"
+        android:layout_height="306dp"
         android:elegantTextHeight="false"
         android:fontFamily="@font/titan_one"
         android:freezesText="false"
@@ -21,7 +21,7 @@
         android:textColor="#D54454"
         android:textColorHighlight="#FF0000"
         android:textColorHint="#AA8383"
-        android:textSize="120sp"
+        android:textSize="100sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"

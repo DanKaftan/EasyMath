@@ -262,7 +262,7 @@
         android:gravity="center"
         android:text="5 x 5 = 25"
         android:textColor="#FFFFFF"
-        android:textSize="34sp"
+        android:textSize="30sp"
         android:textStyle="bold"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"

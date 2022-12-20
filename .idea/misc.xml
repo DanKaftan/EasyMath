@@ -5,16 +5,20 @@
       <map>
         <entry key="app/src/main/res/drawable/button_background.xml" value="0.23958333333333334" />
         <entry key="app/src/main/res/drawable/welcome_screen_background.xml" value="0.34479166666666666" />
+        <entry key="app/src/main/res/font/.xml" value="0.32447916666666665" />
+        <entry key="app/src/main/res/font/bubblegum_sans.xml" value="0.32447916666666665" />
         <entry key="app/src/main/res/font/diplomata.xml" value="0.43385416666666665" />
         <entry key="app/src/main/res/layout-land/activity_welcome_screen.xml" value="0.1948853615520282" />
-        <entry key="app/src/main/res/layout/activity_end_game.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/activity_end_game.xml" value="0.3912710527704291" />
         <entry key="app/src/main/res/layout/activity_end_level.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/activity_first_open.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_game.xml" value="0.4024390243902439" />
         <entry key="app/src/main/res/layout/activity_level_interducer.xml" value="0.23802083333333332" />
         <entry key="app/src/main/res/layout/activity_levels_menu.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.47358972803559185" />
         <entry key="app/src/main/res/layout/activity_main2.xml" value="0.22395833333333334" />
-        <entry key="app/src/main/res/layout/activity_settings.xml" value="0.531005523971802" />
+        <entry key="app/src/main/res/layout/activity_practice_menu.xml" value="0.3484375" />
+        <entry key="app/src/main/res/layout/activity_settings.xml" value="0.5376434547993652" />
         <entry key="app/src/main/res/layout/activity_welcome_screen.xml" value="0.33" />
         <entry key="app/src/main/res/layout/cec.xml" value="0.33" />
         <entry key="app/src/main/res/layout/check.xml" value="0.23785630863414214" />
@@ -69,7 +73,7 @@
       </value>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_16_PREVIEW" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

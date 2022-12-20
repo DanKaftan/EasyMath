@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MathGame</string>
+    <string name="Practice">Uygulama</string>
+    <string name="leaderboard_id">CgkIzZfT9PUaEAIQAA</string>
+    <string name="Levels">Seviyeler</string>
+    <string name="Settings">Ayarlar</string>
+    <string name="Difficulty">Zorluk:</string>
+    <string name="Timer_On_Off">Zamanlayıcı Açık/Kapalı:</string>
+    <string name="Timer">Zamanlayıcı:</string>
+    <string name="Level">Seviye</string>
+    <string name="finalscore">son skor</string>
+    <string name="bestscore">en iyi puan</string>
+    <string name="startnewgame">yeni oyuna Başla</string>
+    <string name="yourfinalscoreis">son puanınız:</string>
+    <string name="newbestscore">Yeni en iyi Puan!</string>
+    <string name="confirm">onaylamak</string>
+    <string name="menu">Menü</string>
+    <string name="nextlevel">sonraki seviye</string>
+    <string name="tryagain">Tekrar deneyin</string>
+    <string name="score">Puan</string>
+    <string name="Done">Tamamlandı!</string>
+    <string name="homepage">ana sayfa</string>
+    <string name="levelpassed">Seviye geçti!</string>
+    <string name="levelfaild">Seviye geçilemedi</string>
+    <string name="upto5">5 e kadar</string>
+    <string name="upto10">10 A kadar</string>
+    <string name="upto20">20\'ye kadar</string>
+    <string name="upto50">50\'ye kadar</string>
+    <string name="upto100">100\'e kadar</string>
+    <string name="title_activity_wrong_answer">yanlış cevap</string>
+    <string name="alllevelsdone">Tüm seviyeler tamamlandı!</string>
+    <string name="addition">İlave</string>
+    <string name="subtraction">Çıkarma</string>
+    <string name="multiplication">Çarpma işlemi</string>
+    <string name="division">Bölüm</string>
+    <string name="changelanguage">Dili değiştir</string>
+    <string name="changesubjectsanddifficulty">Konuları ve zorluğu değiştirin</string>
+    <string name="SetTimer">Zamanlayıcıyı Kur</string>
+    <string name="unlimitedtime">Sınırsız zaman</string>
+    <string name="whatsubjectswouldyouliketolearn">Ne öğrenmek istersin?</string>
+    <string name="choosedifficulty">egzersiz zorluğunu seçin (maksimum sonuç)</string>
+    <string name="youcanchangethissettings">Bu ayarları her zaman ayarlar sayfasından değiştirebilirsiniz.</string>
+    <string name="whatsubjectswouldyouliketopractice">Şimdi hangi konuyu pratik yapmak istersin?</string>
+    <string name="multiplicationtable">(Çarpım tablosu)</string>
+</resources>

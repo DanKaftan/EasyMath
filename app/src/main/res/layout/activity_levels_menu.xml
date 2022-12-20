@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
     android:background="@drawable/new_end_game_background"
-    tools:context=".LevelsMenu"
-    android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen">
+    android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen"
+    tools:context=".LevelsMenu">
 
     <android.support.v7.widget.GridLayout
         android:id="@+id/gridview"
@@ -18,8 +19,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2"
-        app:layout_constraintVertical_bias="0.448">
+        app:layout_constraintTop_toBottomOf="@+id/textView7">
 
         <Button
             android:id="@+id/level21btn"
@@ -271,20 +271,6 @@
 
     </android.support.v7.widget.GridLayout>
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="248dp"
-        android:layout_height="85dp"
-        android:layout_marginStart="241dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="242dp"
-        android:layout_marginBottom="320dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/level_title" />
-
     <LinearLayout
         android:layout_width="100dp"
         android:layout_height="50dp"
@@ -296,8 +282,8 @@
             android:id="@+id/button26"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:onClick="homeBtnOnClick"
-            android:background="@drawable/home_level_menu_btn" />
+            android:background="@drawable/home_level_menu_btn"
+            android:onClick="homeBtnOnClick" />
 
         <Button
             android:id="@+id/button25"
@@ -306,4 +292,19 @@
             android:background="@drawable/mute_level_menu_btn"
             android:onClick="levelmuteOnClick" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="310dp"
+        android:layout_height="67dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/plain_wood_board"
+        android:fontFamily="@font/chalkboard"
+        android:gravity="center"
+        android:text="@string/Levels"
+        android:textColor="#FFFFFF"
+        android:textSize="26sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

@@ -1,5 +1,6 @@
 package com.dan.kaftan.game;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
@@ -10,6 +11,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -17,7 +19,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LevelsMenu extends AppCompatActivity {
 
@@ -90,6 +94,20 @@ public class LevelsMenu extends AppCompatActivity {
         changeBackgroundOfButtons();
         startMusic();
 
+        TextView textView = (TextView) findViewById(R.id.textView7);
+        if (getChosenOperator().equals("+")){
+            textView.setText(getString(R.string.Levels)+": "+ getString(R.string.addition));
+        } else if (getChosenOperator().equals("-")){
+            textView.setText(getString(R.string.Levels)+": "+ getString(R.string.subtraction));
+
+        }else if (getChosenOperator().equals("*")){
+            textView.setText(getString(R.string.Levels)+": "+ getString(R.string.multiplication));
+
+        }else if (getChosenOperator().equals("/")){
+            textView.setText(getString(R.string.Levels)+": "+ getString(R.string.division));
+
+        }
+
     }
 
 
@@ -144,6 +162,7 @@ public class LevelsMenu extends AppCompatActivity {
 
     }
 
+    @SuppressLint("SetTextI18n")
     public void onClick(View v) {
 
         try {
@@ -243,6 +262,8 @@ public class LevelsMenu extends AppCompatActivity {
         i.putExtra("mute", mute);
         i.putExtra("isLevel", isLevel);
         i.putExtra("chosenLevelNum", chosenLevelNum);
+        i.putExtra("chosenOperator", getChosenOperator());
+        i.putExtra("difficulty", getDifficulty());
         if(chosenLevelNum <= currentLevel){
             startActivity(i);
         }
@@ -251,6 +272,9 @@ public class LevelsMenu extends AppCompatActivity {
 
 
     private void getCurrentLevel() {
+        Map<String, String> levelsData = getLevelsData();
+        currentLevel = Integer.parseInt(levelsData.get(getChosenOperator()));
+        /*
         FileInputStream fis = null;
         try {
             fis = openFileInput("level");
@@ -279,6 +303,8 @@ public class LevelsMenu extends AppCompatActivity {
                 }
             }
         }
+
+         */
     }
 
     private void changeBackgroundOfButtons(){
@@ -345,6 +371,49 @@ public class LevelsMenu extends AppCompatActivity {
     }
 
 
+    private Map<String, String> getLevelsData() {
+        Map<String, String> diffMap = new HashMap<>();
+        FileInputStream fis = null;
+        try {
+            fis = openFileInput("level");
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader br = new BufferedReader(isr);
+            StringBuilder sb = new StringBuilder();
+            String text;
+            while ((text = br.readLine()) != null) {
+                sb.append(text);
+                String line = text.toString();
+                String[] parts = line.split(",");
+                String operator = parts[0];
+                String levelNum = parts[1];
+                diffMap.put(operator, levelNum);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fis != null) {
+
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return diffMap;
+    }
+
+    private String getChosenOperator(){
+        Intent i = getIntent();
+        return i.getStringExtra("chosenOperator");
+    }
+
+    private String getDifficulty(){
+        Intent i = getIntent();
+        return i.getStringExtra("difficulty");
+    }
 
 
 }

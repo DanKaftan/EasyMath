@@ -1,9 +1,16 @@
 package com.dan.kaftan.game;
 
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -21,21 +28,18 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class Settings extends AppCompatActivity {
 
     Spinner timerSpinner;
-    Spinner difficultySpinner;
-    Switch timerSwitch;
     String timerSeconds = "10";
-    int maxAnswer = 10;
-    int selectedMaxAnswer = 10;
+
     String selectedTimerSeconds = "10";
     int score = 0;
     boolean revive;
     boolean mute;
 
-    TextView timerTV;
 
 
     @Override
@@ -56,23 +60,10 @@ public class Settings extends AppCompatActivity {
         // rotate screen
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
+        //loadLocale();
 
-        getSelectedMaxAnswer();
         getSelectedTimerSeconds();
         setTimerSpinner();
-        setdifficultySpinner();
-
-        timerSwitch = (Switch) findViewById(R.id.timer_switch);
-        timerTV = (TextView) findViewById(R.id.timer_tv);
-        if (selectedTimerSeconds.equals("unlimited time")) {
-            timerSwitch.setChecked(false);
-            timerSpinner.setVisibility(View.INVISIBLE);
-            timerTV.setVisibility(View.INVISIBLE);
-        } else {
-            timerSwitch.setChecked(true);
-            timerSpinner.setVisibility(View.VISIBLE);
-            timerTV.setVisibility(View.VISIBLE);
-        }
 
         Intent muteIntent = getIntent(); // gets the previously created intent
         mute = muteIntent.getBooleanExtra("mute", false);
@@ -84,6 +75,7 @@ public class Settings extends AppCompatActivity {
 
         ArrayList<String> arraySpinner = new ArrayList(5);
 
+        arraySpinner.add(getString(R.string.unlimitedtime));
         arraySpinner.add("5");
         arraySpinner.add("10");
         arraySpinner.add("15");
@@ -93,95 +85,29 @@ public class Settings extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         timerSpinner.setAdapter(adapter);
         switch (selectedTimerSeconds) {
-            case "5":
+            case "Unlimited Time":
                 timerSpinner.setSelection(0);
                 break;
-            case "10":
+            case "5":
                 timerSpinner.setSelection(1);
                 break;
-            case "15":
+            case "10":
                 timerSpinner.setSelection(2);
                 break;
-            case "20":
+            case "15":
                 timerSpinner.setSelection(3);
                 break;
-        }
-
-    }
-
-
-    public void setdifficultySpinner() {
-
-        difficultySpinner = (Spinner) findViewById(R.id.difficulty_spinner);
-
-        ArrayList<String> arraySpinner = new ArrayList(5);
-
-        if (!welcome_screen.ismulty) {
-            arraySpinner.add("up to 5");
-        }
-        arraySpinner.add("up to 10");
-        arraySpinner.add("up to 20");
-        arraySpinner.add("up to 50");
-        arraySpinner.add("up to 100");
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arraySpinner);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        difficultySpinner.setAdapter(adapter);
-
-        int offset = welcome_screen.ismulty ? -1 : 0;
-        switch (selectedMaxAnswer) {
-            case 5:
-                difficultySpinner.setSelection(0);
+            case "20":
+                timerSpinner.setSelection(4);
                 break;
-            case 10:
-                difficultySpinner.setSelection(1 + offset);
-                break;
-            case 20:
-                difficultySpinner.setSelection(2 + offset);
-                break;
-            case 50:
-                difficultySpinner.setSelection(3 + offset);
-                break;
-            case 100:
-                difficultySpinner.setSelection(4 + offset);
-                break;
-        }
-
-    }
-
-    private void setMaxAnswer() {
-        switch (difficultySpinner.getSelectedItem().toString()) {
-
-            case "up to 5":
-                maxAnswer = 5;
-                break;
-            case "up to 10":
-                maxAnswer = 10;
-                break;
-            case "up to 20":
-                maxAnswer = 20;
-                break;
-            case "up to 50":
-                maxAnswer = 50;
-                break;
-            case "up to 100":
-                maxAnswer = 100;
-                break;
-            case "up to 1000":
-                maxAnswer = 1000;
-                break;
-
-
         }
 
     }
 
     public void confimOnClick(View view) {
-        setMaxAnswer();
-        saveDifficulty();
         timerSeconds = timerSpinner.getSelectedItem().toString();
-        if (!timerSwitch.isChecked()) {
-            timerSeconds = "unlimited time";
+        if (timerSeconds.equals(getString(R.string.unlimitedtime))){
+            timerSeconds = "Unlimited time";
         }
         saveTimerSeconds();
 
@@ -237,62 +163,6 @@ public class Settings extends AppCompatActivity {
 
     }
 
-    private void saveDifficulty() {
-
-        FileOutputStream fos = null;
-
-
-        try {
-            fos = openFileOutput("settings_difficulty", MODE_PRIVATE);
-            fos.write(Integer.toString(maxAnswer).getBytes());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (fos != null) {
-
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }
-
-
-    }
-
-
-    private void getSelectedMaxAnswer() {
-        FileInputStream fis = null;
-        try {
-            fis = openFileInput("settings_difficulty");
-            InputStreamReader isr = new InputStreamReader(fis);
-            BufferedReader br = new BufferedReader(isr);
-            StringBuilder sb = new StringBuilder();
-            String text;
-            while ((text = br.readLine()) != null) {
-
-                sb.append(text);
-                selectedMaxAnswer = Integer.parseInt(sb.toString());
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (fis != null) {
-
-                try {
-                    fis.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
 
     private void getSelectedTimerSeconds() {
         FileInputStream fis = null;
@@ -331,14 +201,77 @@ public class Settings extends AppCompatActivity {
 
     }
 
+    private void showChangeLanguageDialog(){
+        final String[] ItemList = {"عربى","English","Français","español", "עברית", "हिन्दी", "Türk"};
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(Settings.this);
+        mBuilder.setTitle("Choose language");
+        mBuilder.setSingleChoiceItems(ItemList, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                if(i == 0){
+                    setLocal("ar");
+                    recreate();
+                }
+                if(i == 1) {
+                    setLocal("en");
+                    recreate();
+                }
 
-    public void timerOfOnOnClick(View view) {
-        if (timerSwitch.isChecked()) {
-            timerTV.setVisibility(View.VISIBLE);
-            timerSpinner.setVisibility(View.VISIBLE);
-        } else {
-            timerTV.setVisibility(View.INVISIBLE);
-            timerSpinner.setVisibility(View.INVISIBLE);
-        }
+                if(i == 2){
+                    setLocal("fr");
+                    recreate();
+                }
+                if(i == 3){
+                    setLocal("es");
+                    recreate();
+                }
+                if(i == 4){
+                    setLocal("iw");
+                    recreate();
+                }
+                if(i == 5){
+                    setLocal("hi");
+                    recreate();
+                }
+
+                if(i == 6){
+                    setLocal("tr");
+                    recreate();
+                }
+
+
+
+            }
+        });
+        AlertDialog mDialog = mBuilder.create();
+        mDialog.show();
+    }
+    private void setLocal(String lang){
+        Locale myLocale = new Locale(lang);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = myLocale;
+        res.updateConfiguration(conf, dm);
+        getBaseContext().getResources().updateConfiguration(conf, getBaseContext().getResources().getDisplayMetrics());
+        invalidateOptionsMenu();
+        recreate();
+
+
+    }
+
+    public void loadLocale(){
+        SharedPreferences prefs = getSharedPreferences("Settings", Activity.MODE_PRIVATE);
+        String language = prefs.getString("My_Lang", "");
+        setLocal(language);
+    }
+
+    public void changeLanguge(View view) {
+        showChangeLanguageDialog();
+    }
+
+    public void changeDifOnClick(View view){
+        Intent i = new Intent(Settings.this, FirstOpenActivity.class);
+        startActivity(i);
     }
 }

@@ -45,7 +45,7 @@ public class LevelInterducerActivity extends AppCompatActivity {
         TextView levelTv = (TextView) findViewById(R.id.level_tv_int);
         Intent intent = getIntent();
         levelNum = intent.getIntExtra("levelNum", 0 );
-        levelTv.setText("level " + intent.getIntExtra("levelNum", 0 ));
+        levelTv.setText(getString(R.string.Level)+ " " + Integer.toString(intent.getIntExtra("levelNum", 0 )));
         levelTv.startAnimation(myanim);
         // start level
         switchActivity();
@@ -75,11 +75,22 @@ public class LevelInterducerActivity extends AppCompatActivity {
                     i.putExtra("isLevel", intent.getBooleanExtra("isLevel", false));
                     i.putExtra("mute", intent.getBooleanExtra("mute", false));
                     i.putExtra("chosenLevelNum", levelNum);
+                    i.putExtra("chosenOperator", getChosenOperator());
+                    i.putExtra("difficulty", getDifficulty());
                     startActivity(i);
                     finish();
                 }
             }
         };
         timer.start();
+    }
+    private String getChosenOperator(){
+        Intent i = getIntent();
+        return i.getStringExtra("chosenOperator");
+    }
+
+    private String getDifficulty(){
+        Intent i = getIntent();
+        return i.getStringExtra("difficulty");
     }
 }

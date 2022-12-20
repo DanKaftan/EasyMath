@@ -1,5 +1,7 @@
 package com.dan.kaftan.game;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
@@ -23,7 +25,9 @@ import android.widget.TextView;
 import com.dan.kaftan.game.targil.BankOfTargils;
 import com.dan.kaftan.game.targil.Targil;
 import com.dan.kaftan.game.targil.TargilAdd;
+import com.dan.kaftan.game.targil.TargilDiv;
 import com.dan.kaftan.game.targil.TargilMultiply;
+import com.dan.kaftan.game.targil.TargilSub;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -39,7 +43,10 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 
 public class Game extends AppCompatActivity {
@@ -67,6 +74,7 @@ public class Game extends AppCompatActivity {
     int maxLevel = 1;
 
     String timerSecondsOnString = "10";
+    String operatorSymbol = "+";
 
     Button homeBtn;
     Button muteBtn;
@@ -116,13 +124,13 @@ public class Game extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
-    static InterstitialAd interstitialAd;
 
 
     // this holds the targilim we want to run
     BankOfTargils bankOfTargils = new BankOfTargils();
     private RewardedVideoAd mRewardedVideoAd;
 
+    static InterstitialAd mInterstitialAd;
 
     int[] timeArray = new int[48];
     int[] exNumArray = new int[48];
@@ -153,23 +161,6 @@ public class Game extends AppCompatActivity {
         setViews();
         levelMode();
         setEntersCounter();
-
-
-
-        // end game ad
-        interstitialAd = new InterstitialAd(this);
-
-        interstitialAd.setAdUnitId("ca-app-pub-7775472521601802/2796958344");
-        interstitialAd.loadAd(new AdRequest.Builder().build());
-
-        interstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdClosed() {
-                interstitialAd.loadAd(new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build());
-            }
-
-        });
-
         Intent i = getIntent();
         mute = i.getBooleanExtra("mute", false);
         muteBtn = (Button) findViewById(R.id.game_mute_btn);
@@ -184,7 +175,7 @@ public class Game extends AppCompatActivity {
         copyReviveFromPrevActivity();
         copyScoreFromPrevActivity(revive);
         if (!isLevel) {
-            tvScore.setText("score: " + Integer.toString(score));
+            tvScore.setText(getString(R.string.score) + ": " + Integer.toString(score));
             levelTv.setVisibility(View.INVISIBLE);
             gridLayout.setVisibility(View.INVISIBLE);
         } else {
@@ -198,10 +189,14 @@ public class Game extends AppCompatActivity {
         getDifficulty();
         getTimerSeconds();
 
-
+        String chosenOperator = i.getStringExtra("chosenOperator");
         //מה יהיה סוג התרגילים
-        if (welcome_screen.ismulty) {
+        if (chosenOperator.equals("*")) {
+            operatorSymbol = "x";
             switch (maxAnswer) {
+                case 5:
+                    initTargilim(5, 5, maxAnswer, true, "x");
+                    break;
                 case 10:
                     initTargilim(5, 5, maxAnswer, true, "x");
                     break;
@@ -214,9 +209,12 @@ public class Game extends AppCompatActivity {
                     initTargilim((int) Math.sqrt(maxAnswer), (int) Math.sqrt(maxAnswer), maxAnswer, true, "x");
                     break;
             }
-        } else {
+        } else if (chosenOperator.equals("+")){
+            operatorSymbol = "+";
             switch (maxAnswer) {
                 case 5:
+                    initTargilim(maxAnswer - 1, maxAnswer - 1, maxAnswer, true, "+");
+                    break;
                 case 10:
                     initTargilim(maxAnswer - 1, maxAnswer - 1, maxAnswer, true, "+");
                     break;
@@ -235,6 +233,57 @@ public class Game extends AppCompatActivity {
             }
 
         }
+
+        else if (chosenOperator.equals("-")){
+            operatorSymbol = "-";
+            switch (maxAnswer) {
+                case 5:
+                    initTargilim(5, 5, maxAnswer, true, "-");
+                    break;
+                case 10:
+                    initTargilim(maxAnswer - 1, maxAnswer - 1, maxAnswer, true, "-");
+                    break;
+                case 20:
+                    initTargilim(10, 10, maxAnswer, true, "-");
+                    break;
+                case 50:
+                    initTargilim(25, 25, maxAnswer, true, "-");
+                    break;
+                case 100:
+                    initTargilim(50, 50, maxAnswer, true, "-");
+                    break;
+                case 1000:
+                    initTargilim(500, 500, maxAnswer, true, "-");
+                    break;
+            }
+
+        }
+
+        else if (chosenOperator.equals("/")){
+            operatorSymbol = "/";
+            switch (maxAnswer) {
+                case 5:
+                    initTargilim(maxAnswer - 1, maxAnswer - 1, maxAnswer, true, "/");
+                    break;
+                case 10:
+                    initTargilim(maxAnswer - 1, maxAnswer - 1, maxAnswer, true, "/");
+                    break;
+                case 20:
+                    initTargilim(10, 10, maxAnswer, true, "/");
+                    break;
+                case 50:
+                    initTargilim(25, 25, maxAnswer, true, "/");
+                    break;
+                case 100:
+                    initTargilim(50, 50, maxAnswer, true, "/");
+                    break;
+                case 1000:
+                    initTargilim(500, 500, maxAnswer, true, "/");
+                    break;
+            }
+
+        }
+
 
         setSound();
 
@@ -392,6 +441,26 @@ public class Game extends AppCompatActivity {
             case "x":
                 targil = new TargilMultiply(firstNum, secondNum, operator);
                 break;
+            case "-":
+                if(firstNum < secondNum){
+                    int flag = firstNum;
+                    firstNum = secondNum;
+                    secondNum = flag;
+                }
+                targil = new TargilSub(firstNum, secondNum, operator);
+                break;
+            case "/":
+                if(firstNum % secondNum !=0){
+                    if(firstNum < secondNum){
+                        int flag = firstNum;
+                        firstNum = secondNum;
+                        secondNum = flag;
+                    }
+                    int sherit = firstNum % secondNum;
+                    firstNum = firstNum - sherit;
+                }
+                targil = new TargilDiv(firstNum, secondNum, operator);
+                break;
 
             default:
                 throw new UnsupportedOperationException();
@@ -460,7 +529,11 @@ public class Game extends AppCompatActivity {
             } else {
                 isRightAnswer = false;
                 iv.setImageResource(R.drawable.x);
-                trueAnsTv.setText( firstNum + " + " + secondNum + " = " + trueAnswer);
+                if (operatorSymbol.equals("/")) {
+                    trueAnsTv.setText( firstNum + " "+ ":" + " " + secondNum + " = " + trueAnswer);
+                }else{
+                    trueAnsTv.setText( firstNum + " "+ operatorSymbol + " " + secondNum + " = " + trueAnswer);
+                }
                 trueAnsTv.setVisibility(View.VISIBLE);
 
                 // do not disturb with sounds if not visible
@@ -482,7 +555,7 @@ public class Game extends AppCompatActivity {
                 }
             }
             if (!isLevel) {
-                tvScore.setText("score: " + Integer.toString(score));
+                tvScore.setText(getString(R.string.score)+": " + Integer.toString(score));
             } else {
                 tvScore.setText(currentExNum + "/" + exNumArray[levelNum - 1]);
 
@@ -519,7 +592,7 @@ public class Game extends AppCompatActivity {
 
     //מגיעים לפונקציה שהמשחק נגמר
 
-    public void gameOver() {
+    public void gameOver() throws IOException {
 
 
         System.out.println("levelNum" + levelNum);
@@ -544,6 +617,9 @@ public class Game extends AppCompatActivity {
             a.putExtra("levelNum", levelNum);
             a.putExtra("levelPassed", levelPassed);
             a.putExtra("isFromSettings", false);
+            a.putExtra("difficulty", maxAnswer);
+            a.putExtra("operator", operatorSymbol);
+            a.putExtra("chosenOperator", getChosenOperator());
             startActivity(a);
         } else {
             gameOver = true;
@@ -624,7 +700,11 @@ public class Game extends AppCompatActivity {
             }
 
             public void onFinish() {
-                gameOver();
+                try {
+                    gameOver();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
             }
         }.start();
@@ -653,7 +733,11 @@ public class Game extends AppCompatActivity {
         }
         if (isVisible && gameOver) {
             gameOver = false;
-            gameOver();
+            try {
+                gameOver();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -686,7 +770,7 @@ public class Game extends AppCompatActivity {
                     timerSeconds = timeArray[levelNum - 1];
                 } else {
                     timerSecondsOnString = sb.toString();
-                    if (timerSecondsOnString.equals("unlimited time")) {
+                    if (timerSecondsOnString.equals("Unlimited time")) {
                         timerSeconds = 10000;
                     } else {
                         timerSeconds = Integer.parseInt(timerSecondsOnString);
@@ -711,32 +795,12 @@ public class Game extends AppCompatActivity {
 
     // שליפת סוג התרגילים שהמשתמש ביקש מקובץ טקסט והשמה שלהם במשתנים המתאימים
     private void getDifficulty() {
-        FileInputStream fis = null;
-        try {
-            fis = openFileInput("settings_difficulty");
-            InputStreamReader isr = new InputStreamReader(fis);
-            BufferedReader br = new BufferedReader(isr);
-            StringBuilder sb = new StringBuilder();
-            String text;
-            while ((text = br.readLine()) != null) {
-
-                sb.append(text);
-                maxAnswer = Integer.parseInt(sb.toString());
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (fis != null) {
-
-                try {
-                    fis.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+        Intent i = getIntent();
+        String maxAnswerStr = i.getStringExtra("difficulty");
+        if (maxAnswerStr == null){
+            maxAnswerStr = "10";
         }
+        maxAnswer = Integer.parseInt(maxAnswerStr);
     }
 
     public void setMute() {
@@ -755,13 +819,13 @@ public class Game extends AppCompatActivity {
 
     public void levelMode() {
 
-        setLevel();
-        setLevelsArrays();
 
 
         Intent intent = getIntent();
         isLevel = intent.getBooleanExtra("isLevel", false);
         if (isLevel) {
+            setLevel();
+            setLevelsArrays();
             tvScore.setVisibility(View.INVISIBLE);
 //            initTargilim(maxAnswer-1,maxAnswer-1, maxResultArray[levelNum-1], true,"x");
 
@@ -774,11 +838,17 @@ public class Game extends AppCompatActivity {
 
     }
 
-
-    private void setLevel() {
+    private int getSavedLevel() {
+        Map<String, String> levelsData = getLevelsData();
+         return Integer.parseInt(levelsData.get(getChosenOperator()));
+    }
+    private String getChosenOperator(){
         Intent i = getIntent();
-        levelNum = i.getIntExtra("chosenLevelNum", 1);
-        levelTv.setText("level: " + levelNum);
+        return i.getStringExtra("chosenOperator");
+    }
+
+    private Map<String, String> getLevelsData() {
+        Map<String, String> diffMap = new HashMap<>();
         FileInputStream fis = null;
         try {
             fis = openFileInput("level");
@@ -787,20 +857,12 @@ public class Game extends AppCompatActivity {
             StringBuilder sb = new StringBuilder();
             String text;
             while ((text = br.readLine()) != null) {
-
                 sb.append(text);
-                i = getIntent();
-                levelNum = i.getIntExtra("chosenLevelNum", 1);
-                levelTv.setText("level: " + levelNum);
-                int savedLevel = Integer.parseInt(sb.toString());
-                if (savedLevel > levelNum){
-                    maxLevel = savedLevel;
-                }
-                else{
-                    maxLevel = levelNum;
-                }
-
-
+                String line = text.toString();
+                String[] parts = line.split(",");
+                String operator = parts[0];
+                String levelNum = parts[1];
+                diffMap.put(operator, levelNum);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -814,24 +876,77 @@ public class Game extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            } else {
-                levelNum = 0;
             }
         }
+        return diffMap;
     }
 
-    private void saveLevel() {
-        FileOutputStream fos = null;
 
+    private void setLevel() {
+        Intent i = getIntent();
+        levelNum = i.getIntExtra("chosenLevelNum", 1);
+        levelTv.setText(getString(R.string.Level)+ ": " + levelNum);
+        i = getIntent();
+        levelNum = i.getIntExtra("chosenLevelNum", 1);
+        levelTv.setText(getString(R.string.Level)+ ": " + levelNum);
+        if (getSavedLevel() > levelNum){
+            maxLevel = getSavedLevel();
+        }
+        else{
+            maxLevel = levelNum;
+        }
+
+    }
+
+    private List<String> getLevelsList(){
+        List<String> levelsList = new ArrayList<>();
+        FileInputStream fis = null;
+        try {
+            fis = openFileInput("level");
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader br = new BufferedReader(isr);
+            StringBuilder sb = new StringBuilder();
+            String text;
+            while ((text = br.readLine()) != null) {
+                levelsList.add(text);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fis != null) {
+
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return levelsList;
+    }
+
+    private void saveLevel() throws IOException {
+        List<String> levelsList = getLevelsList();
+
+        FileOutputStream fos = openFileOutput("level", MODE_PRIVATE);
 
         try {
-            fos = openFileOutput("level", MODE_PRIVATE);
-            if (levelPassed && levelNum==maxLevel){
-                fos.write(Integer.toString(maxLevel+1).getBytes());
-
-            }
-            else{
-                fos.write(Integer.toString(maxLevel).getBytes());
+            for (int i = 0; i<levelsList.size(); i++){
+                String[] parts = levelsList.get(i).split(",");
+                String textOperator = parts[0];
+                if (textOperator.equals(getChosenOperator())){
+                    if (levelPassed && levelNum==maxLevel){
+                        fos.write((textOperator+","+Integer.toString(maxLevel+1)).getBytes());
+                    }
+                    else{
+                        fos.write((textOperator+","+Integer.toString(maxLevel)).getBytes());
+                    }
+                } else {
+                    fos.write((levelsList.get(i)).getBytes());
+                }
+                fos.write(10);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -883,6 +998,7 @@ public class Game extends AppCompatActivity {
             }
         }
     }
+
 
 
     private void saveEntersCounter() {
@@ -1084,6 +1200,7 @@ public class Game extends AppCompatActivity {
             circle_list.add(imageView);
         }
     }
+
 
 }
 
